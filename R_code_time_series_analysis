@@ -1,0 +1,43 @@
+# Time series analysis of Greenland LST data
+
+library(raster) #richiamo la librearia che mi serve
+setwd("/Users/sofiageminiani/Desktop/lab_greenland") # setto/preparo la cartella di lavoro, uso la funzione con questo argomento perchè uso un Mac
+
+lst2000 <- raster("lst_2000.tif")
+lst2000 # premo invio e otterrò una serie di informazioni
+plot(lst2000) #l'immagine plottata è caratterizzata nella parte centrale da temperature più fredde
+
+# importo anche le restanti immagini
+
+lst2005 <- raster("lst_2005.tif")
+lst2010 <- raster("lst_2010.tif")
+lst2015 <- raster("lst_2015.tif")
+
+# creo una palette personalizzata di colori per la legenda
+cl <- colorRampPalette(c("blue", "light blue", "pink", "red")) (100)
+#creo un multiframe di 4 immagini usando la palette di colori per la legenda creata
+par(mfrow=c(2,2))
+plot(lst2000, col = cl)
+plot(lst2005, col = cl)
+plot(lst2010, col = cl)
+plot(lst2015, col = cl)
+
+# importiamo tutto il set di immagini insieme
+rlist <- list.files(pattern = "lst")
+rlist #premo invio e vedo in ordine tutti i file che ho dentro alla mia cartella di lavoro
+lapply(rlist, raster)
+import <- lapply(rlist, raster) # abbiamo messo insieme i singoli lst, le singole immagini
+#faccio lo stack ovvero creo un blocco comune di tutti i dati
+tgr <- stack(import)
+plot(tgr, col = cl) #ottengo il plot precedentemente ottenuto, ma in maniera più veloce
+
+#per plottare una sola immagine usando lo stack
+plot(tgr[[1]], col = cl)
+
+# plottare lo stack in RGB, sovrapposizione delle immagini, analisi time series
+plotRGB(tgr, r=1, g=2, b=3, stretch = "lin") #colori scuri indicano temperature più rigide, mentre colori chiari indicano temperature più alte)
+
+
+
+
+
