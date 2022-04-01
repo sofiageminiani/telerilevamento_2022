@@ -35,7 +35,7 @@ plot(tgr, col = cl) #ottengo il plot precedentemente ottenuto, ma in maniera pi�
 plot(tgr[[1]], col = cl)
 
 # plottare lo stack in RGB, sovrapposizione delle immagini, analisi time series
-plotRGB(tgr, r=1, g=2, b=3, stretch = "lin") #colori scuri indicano temperature più rigide, mentre colori chiari indicano temperature più alte)
+plotRGB(tgr, r=1, g=2, b=3, stretch = "lin") #colori scuri indicano temperature più rigide, mentre colori chiari indicano temperature più alte
 
 
 
