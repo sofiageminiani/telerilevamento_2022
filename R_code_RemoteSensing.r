@@ -7,7 +7,7 @@ library(raster) #richiamo la libreria precedentemente installata
 setwd("/Users/sofiageminiani/desktop/lab") #utilizzo questa funzione per settare il percorso alla cartella lab, nell'argomento devo inserire il nome utente perchè utilizzo un Mac
 
 #caricamento/importare dati dalla cartella di lavoro (lab) in R
-l2011 <- brick("p224r63_2011.grd")
+l2011 <- brick("p224r63_2011.grd") #244 path e 63 row, incrociate troviamo il punto di interesse
 l2011 #se clicco invio otterrò una serie di informazioni
 
 #plot, visualizzo l'immagine importata in R per ogni banda
@@ -92,3 +92,9 @@ plot(l2011$B3_sre, col = clr)
 clnir <- colorRampPalette(c("red", "orange", "yellow")) (100) # legenda in palette con variazioni di colore dal rosso, passando dall'arancione al giallo
 plot(l2011$B4_sre, col = clnir)
 # otterrò un multiframe con le immagini nelle bande del blu, verde, rosso e NIR
+
+# plot dell'immagine l2011 nella banda NIR, infrarosso vicino
+clnir <- colorRampPalette(c("red", "orange", "yellow")) (100) # scelgo una palette di colori per la legenda con variazioni di colore dal rosso, passando dall'arancione al giallo
+plot(l2011$B4_sre, col = clnir)
+#oppure
+plot(l2011[[4]], col = clnir)
