@@ -58,4 +58,37 @@ plot(l2011$B2_sre, col = clg)
 #oppure
 plot(l2011[[2]], col = clg)
 
-# per plottare più immagini insieme, ovvero realizzare un multiframe, utilizzo la funzione par(mfrow())
+# per plottare più immagini insieme, ovvero realizzare un multiframe, utilizzo la funzione par(mfrow=c(riga, colonna))
+par(mfrow = c(1, 2))
+plot(l2011$B1_sre, col = clb)
+plot(l2011$B2_sre, col = clg)
+# otterrò un multiframe con a sinistra l'immagine nella banda del blu ed a destra nella banda del verde
+dev.off() # per chiudere la finestra che visualizza il multiframe
+
+# per esportare in pdf il multiframe ottenuto
+pdf("multiframe.pdf")
+par(mfrow = c(1, 2)) 
+plot(l2011$B1_sre, col = clb)
+plot(l2011$B2_sre, col = clg)
+# otterrò un multiframe di 1 riga e due colonne, quindi le due immagini una di fianco all'altra
+dev.off()
+
+# revert the multiframe: posizionare l'immagine nella banda del blu sopra a quella nella banda del verde
+par(mfrow = c(2, 1)) 
+plot(l2011$B1_sre, col = clb)
+plot(l2011$B2_sre, col = clg)
+dev.off()
+
+# multiframe di 4 immagini satellitari per le bande B1_sre, B2_sre, B3_sre, B4_sre
+par(mfrow = c(2, 1)) 
+# plot nella banda del blu
+plot(l2011$B1_sre, col = clb)
+# plot nella banda del verde
+plot(l2011$B2_sre, col = clg)
+# plot nella banda del rosso
+clr <- colorRampPalette(c("dark red", "red", "pink")) (100) # legenda in palette con variazioni di colore dal rosso scuro al rosa
+plot(l2011$B3_sre, col = clr)
+# plot nella banda NIR, vicino infrarosso
+clnir <- colorRampPalette(c("red", "orange", "yellow")) (100) # legenda in palette con variazioni di colore dal rosso, passando dall'arancione al giallo
+plot(l2011$B4_sre, col = clnir)
+# otterrò un multiframe con le immagini nelle bande del blu, verde, rosso e NIR
