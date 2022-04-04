@@ -98,3 +98,16 @@ clnir <- colorRampPalette(c("red", "orange", "yellow")) (100) # scelgo una palet
 plot(l2011$B4_sre, col = clnir)
 #oppure
 plot(l2011[[4]], col = clnir)
+
+#plot RGB layers
+plotRGB(l2011, r = 3, g = 2, b = 1, stretch = "lin")# argomento chiamato stretch, amplia i valori il più possibile per vedere meglio i colori, può essere a istogramma o lineare
+# ottengo una immagine a colori naturali, parte nera in cui non sono stati registrati valori
+# l'immagine rappresenta la riserva da 800 km di distanza come la vedrebbe l'occhio umano
+
+# per visualizzare la banda NIR
+plotRGB(l2011, r = 4, g = 3, b = 2, stretch = "lin") #visualizzo le bande NIR, rosso e verde ma non la banda del blu
+# immagine visualizzata non a colori naturali, ma ciò che riflette molto l'infrarosso diventerà rosso
+
+# mettiamo NIR nella componente green - verde
+plotRGB(l2011, r = 3, g = 4, b = 2, stretch = "lin")
+#tutto quello che riflette nell'infrarosso vicino - NIR - diventerà verde
