@@ -128,10 +128,8 @@ par(mfrow=c(2, 1)) #2 righe e 1 colonna
 plotRGB(l2011, r=3, g=2, b=1, stretch = "lin")
 plotRGB(l2011, r=3, g=4, b=2, stretch = "hist")
 # ottengo un multiframe con due immagini, una sopra all'altra, quella sopra rappresenta ciò che vedrebbe l'occhi umano mentre l'altra è data dal sensore del satellite che ha una potenza risolutiva, a livello di bande e strretch, maggiore dell'occhio umanao 
-Abbiamo p224r63_1988.gdr
-
-
-# esercizio: caricare l'immagine del 1988
+ 
+# esercizio: caricare l'immagine del 1988, "p224r63_1988.gdr"
 
 # importare l'immagine del 1988
 l1988 <- brick("p224r63_1988.grd")
