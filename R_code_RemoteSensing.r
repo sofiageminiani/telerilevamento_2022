@@ -110,4 +110,36 @@ plotRGB(l2011, r = 4, g = 3, b = 2, stretch = "lin") #visualizzo le bande NIR, r
 
 # mettiamo NIR nella componente green - verde
 plotRGB(l2011, r = 3, g = 4, b = 2, stretch = "lin")
-#tutto quello che riflette nell'infrarosso vicino - NIR - diventerà verde
+# tutto quello che riflette nell'infrarosso vicino, NIR, diventerà verde
+
+# mettiamo NIR nella componente blu
+plotRGB(l2011, r = 3, g = 2, b = 4, stretch = "lin")
+# tutto che riflette nell'infrarosso vicino diventerà blu; si vedono bene le zone a suolo nudo (aree agricole più chiare)
+
+# stesso plot del precedente, ma con stretch a istogramma
+plotRGB(l2011, r = 3, g = 4, b = 2, stretch = "hist") # ottengo un plto con differenziazione altissima delle colorazioni rispetto la precedente immagine
+# il nostro occhio è un sensore povero, ma lavorando con lo stretch e mettendo l'infrarosso vicino nella banda del verde riusciamo a vedere le zone interne della foresta
+
+# esercizio: costruire un multiframe con visualizzazione in RGB (visualizzazione in colori naturali
+# (linear stretch) on top of false colors
+# (histogram stretch)
+
+par(mfrow=c(2, 1)) #2 righe e 1 colonna
+plotRGB(l2011, r=3, g=2, b=1, stretch = "lin")
+plotRGB(l2011, r=3, g=4, b=2, stretch = "hist")
+# ottengo un multiframe con due immagini, una sopra all'altra, quella sopra rappresenta ciò che vedrebbe l'occhi umano mentre l'altra è data dal sensore del satellite che ha una potenza risolutiva, a livello di bande e strretch, maggiore dell'occhio umanao 
+Abbiamo p224r63_1988.gdr
+
+
+# esercizio: caricare l'immagine del 1988
+
+# importare l'immagine del 1988
+l1988 <- brick("p224r63_1988.grd")
+l1988
+# realizzo un multiframe con NIR nella componente del rosso e confronto il 1988 ed il 2011
+par(mfrow=c(2,1))
+plotRGB(l1988, r=4, g=3, b=2, stretch = "lin")
+plotRGB(l2011, r=4, g=3, b=2, stretch = "lin")
+# ottengo un multiframe con sopra l'immagine del 1988 e sotto quella del 2011
+# i sensori usati per ottenere le due immagini sono diversi, inoltre nell’immagine del 1988, rispetto a quella del 2011, si nota che in quel periodo l’uomo aveva appena iniziato a costruire alcune strade
+
