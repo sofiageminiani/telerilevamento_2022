@@ -1,16 +1,16 @@
 # questo è il primo script che useremo a lezione
 
-#installazione usando la funzione install.packages("raster")
+# installazione usando la funzione install.packages("raster")
 library(raster) #richiamo la libreria precedentemente installata
 
-#settiamo la cartella di lavoro che utilizzeremo
+# settiamo la cartella di lavoro che utilizzeremo
 setwd("/Users/sofiageminiani/desktop/lab") #utilizzo questa funzione per settare il percorso alla cartella lab, nell'argomento devo inserire il nome utente perchè utilizzo un Mac
 
-#caricamento/importare dati dalla cartella di lavoro (lab) in R
+# caricamento/importare dati dalla cartella di lavoro (lab) in R
 l2011 <- brick("p224r63_2011.grd") #244 path e 63 row, incrociate troviamo il punto di interesse
 l2011 #se clicco invio otterrò una serie di informazioni
 
-#plot, visualizzo l'immagine importata in R per ogni banda
+# plot, visualizzo l'immagine importata in R per ogni banda
 plot(l2011) #visualizzo le immagini  per ogni banda con legenda di default
 cl <- colorRampPalette(c("black", "grey", "light grey")) (100) #creo una palette di colori personalizzata per la legenda in sostituzione a quella di default precedente
 plot(l2011, col = cl) #plot, visualizzo le immagini per ogni banda con la legenda personalizzata
@@ -55,7 +55,7 @@ dev.off()
 # plotto la banda del verde con legenda in palette con variazioni di colore dal verde scuro al verde chiaro
 clg <- colorRampPalette(c("dark green", "green", "light green")) (100)
 plot(l2011$B2_sre, col = clg)
-#oppure
+# oppure
 plot(l2011[[2]], col = clg)
 
 # per plottare più immagini insieme, ovvero realizzare un multiframe, utilizzo la funzione par(mfrow=c(riga, colonna))
@@ -96,10 +96,10 @@ plot(l2011$B4_sre, col = clnir)
 # plot dell'immagine l2011 nella banda NIR, infrarosso vicino
 clnir <- colorRampPalette(c("red", "orange", "yellow")) (100) # scelgo una palette di colori per la legenda con variazioni di colore dal rosso, passando dall'arancione al giallo
 plot(l2011$B4_sre, col = clnir)
-#oppure
+# oppure
 plot(l2011[[4]], col = clnir)
 
-#plot RGB layers
+# plot RGB layers
 plotRGB(l2011, r = 3, g = 2, b = 1, stretch = "lin")# argomento chiamato stretch, amplia i valori il più possibile per vedere meglio i colori, può essere a istogramma o lineare
 # ottengo una immagine a colori naturali, parte nera in cui non sono stati registrati valori
 # l'immagine rappresenta la riserva da 800 km di distanza come la vedrebbe l'occhio umano
