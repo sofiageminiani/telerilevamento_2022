@@ -1,1 +1,44 @@
+library(raster) # richiamo la libreria che mi servirà
+install.packages("rgdal") # come Mac user mi veniva richiesto di scaricare questo pacchetto per visualizzare le immagini in estensione.jpg
+#la libreria rgdal non è da richiamare perchè fa parte di raster
 
+setwd("/Users/sofiageminiani/desktop/lab") #settiamo la cartella di lavoro, Mac users
+
+# importare/caricare l'immagine satellitare da analizzare nominandola l1992
+l1992 <- brick("defor1_.jpg")
+l1992 # cliccando invio otterrò una serie di informazioni riportate nei commenti sottostanti
+# class      : RasterBrick 
+# dimensions : 478, 714, 341292, 3  (nrow, ncol, ncell, nlayers) 
+# resolution : 1, 1  (x, y) 
+# extent     : 0, 714, 0, 478  (xmin, xmax, ymin, ymax)
+# crs        : NA 
+# source     : defor1_.jpg 
+# names      : defor1_.1, defor1_.2, defor1_.3 
+# min values :         0,         0,         0 
+# max values :       255,       255,       255 
+# dalle informazioni possiamo trarre che abbiamo a disposizione tre bande, che la risoluzione è di tipo immagine perchè non è georeferenziata e le bande si chiamano defor1_.1, defor1_.2 e defor1_.3 
+# riguardo i valori massimi e minimi vediamo che i valori vanno da 0 a 255, usiamo Shannon
+
+
+plotRGB(l1992, r=1, g=2, b=3, stretch=“lin”)
+
+#dobbiamo scoprire quale banda abbiamo plottato sul rosso.
+
+#layer 1 = NIR
+#layer 2 = red
+#layer 3 = green
+
+L2006 <- brick(“defor2_.jpg”)
+plotRGB(l2006, r=1, g=2, b=3, stretch=“lin”)
+#plot in a multiframe this two images
+
+# DVI
+Dvi1992 = l1992[[1]] - l1992[[2]]
+
+
+
+
+#DVI difference in time
+
+dvi_dif = div1992 - div2006
+Cld <- colorRampPalette(c(“blue, “white”, “red”)) (100)
