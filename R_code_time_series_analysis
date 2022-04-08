@@ -44,8 +44,9 @@ plotRGB(tgr, r=1, g=2, b=3, stretch = "lin") #colori scuri indicano temperature 
 #### Esempio 2: N02 diminuisce durante il lockdown
 #######################
 
-#la libreria raster ci serve ed è stata richiamata sopra library(raster)
-setwd("Users/sofiageminiani/desktop/lab_european") #setto/preparo la cartella di lavoro
+# la libreria raster ci serve ed è stata richiamata sopra 
+# library(raster)
+# setwd("Users/sofiageminiani/desktop/lab_european") #setto/preparo la cartella di lavoro
 en01 <- raster("EN_0001.png")
 en01 # cliccando invio ottengo le seguenti informazioni:
 ## class      : RasterLayer 
