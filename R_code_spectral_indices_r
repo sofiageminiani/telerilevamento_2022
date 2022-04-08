@@ -155,7 +155,7 @@ si2006 <- spectralIndices(l2006, green=3, red=2, nir=1) # apparirà un warning r
 plot(si2006, col=cl)
 # visualizzo un plot con tutti gli indici potenzialmente visualizzabili
 
-### utilizziamo il pacchetto rasterdiv
+### utilizziamo il pacchetto rasterdiv richiamato con la libreria
 plot(copNDVI)
 # visualizzazione mappa del globo
 # le zone verdi sono caratterizzate da alta biomassa: foreste tropicali e foreste di conifere delle alte latitudini
