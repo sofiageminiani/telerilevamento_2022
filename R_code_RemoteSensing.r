@@ -9,8 +9,8 @@ library(raster) #richiamo la libreria precedentemente installata
 setwd("/Users/sofiageminiani/desktop/lab") # Mac
 
 # importare dati dalla cartella di lavoro, denominata "lab", in R
-l2011 <- brick("p224r63_2011.grd") #244 path e 63 row, incrociate troviamo il punto di interesse
-l2011 #se clicco invio otterrò la seguente serie di informazioni
+l2011 <- brick("p224r63_2011.grd") #224 path e 63 row, incrociate troviamo il punto di interesse
+l2011 # se clicco invio otterrò la seguente serie di informazioni
 ## class      : RasterBrick 
 ## dimensions : 1499, 2967, 4447533, 7  (nrow, ncol, ncell, nlayers)
 ## resolution : 30, 30  (x, y)
@@ -23,7 +23,7 @@ l2011 #se clicco invio otterrò la seguente serie di informazioni
 
 # plot: visualizzo l'immagine importata in R per ogni banda
 plot(l2011) #visualizzo le immagini  per ogni banda con legenda di default
-#creo una palette di colori personalizzata per la legenda in sostituzione a quella di default precedente
+# creo una palette di colori personalizzata per la legenda in sostituzione a quella di default precedente
 cl <- colorRampPalette(c("black", "grey", "light grey")) (100) 
 plot(l2011, col = cl) # visualizzo le immagini per ogni banda con la legenda personalizzata
 
