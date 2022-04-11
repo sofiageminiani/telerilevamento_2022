@@ -54,8 +54,10 @@ plotRGB(tgr, r=1, g=2, b=3, stretch = "lin") #colori scuri indicano temperature 
 
 
 
+
+
 #######################
-#### Esempio 2: N02 diminuisce durante il lockdown
+#### Esempio 2: N02 - diossido di azoto - diminuisce durante il lockdown
 #######################
 
 # la libreria raster ci serve ed è stata richiamata sopra 
@@ -72,23 +74,23 @@ en01 # cliccando invio ottengo le seguenti informazioni:
 ## source     : EN_0001.png 
 ## names      : EN_0001 
 ## values     : 0, 255  (min, max)
-cl <- colorRampPalette(c('red','orange','yellow'))(100) 
+cl <- colorRampPalette(c("red", "orange","yellow"))(100) 
 plot(en01, col=cl) #gennaio 2020
 
 en13 <- raster("EN_0013.png")
 en13
-class      : RasterLayer 
-band       : 1  (of  3  bands)
-dimensions : 432, 768, 331776  (nrow, ncol, ncell)
-resolution : 1, 1  (x, y)
-extent     : 0, 768, 0, 432  (xmin, xmax, ymin, ymax)
-crs        : NA 
-source     : EN_0013.png 
-names      : EN_0013 
-values     : 0, 255  (min, max)
+## class      : RasterLayer 
+## band       : 1  (of  3  bands)
+## dimensions : 432, 768, 331776  (nrow, ncol, ncell)
+## resolution : 1, 1  (x, y)
+## extent     : 0, 768, 0, 432  (xmin, xmax, ymin, ymax)
+## crs        : NA 
+## source     : EN_0013.png 
+## names      : EN_0013 
+## values     : 0, 255  (min, max)
 plot(en13, col=cl)
 
-#Importiamo l'intero set di immagini insieme
+# importiamo l'intero set di immagini insieme
 # seguendo gli step: list.files, lapply, stack
 
 rlist <- list.files(pattern="EN") # definisco un pattern comune per tutti
@@ -103,25 +105,23 @@ plot(en, col=cl) #otteniamo un plot in cui visualizziamo tutte le 13 immagini sa
 # esercizio: plottiamo EN01 di fianco a EN13
 par(mfrow=c(1,2))
 plot(en[[1]], col=cl)
-plot(en[[13]], col=cl
-
+plot(en[[13]], col=cl)
 # oppure
-
 en_1_13 <- stack(en[[1]], en[[13]])
 plot(en_1_13, col=cl)
 
 # facciamo la differenza
 difen <- en[[1]] - en[[13]]
 difen 
-class      : RasterLayer 
-dimensions : 432, 768, 331776  (nrow, ncol, ncell)
-resolution : 1, 1  (x, y)
-extent     : 0, 768, 0, 432  (xmin, xmax, ymin, ymax)
-crs        : NA 
-source     : memory
-names      : layer 
-values     : -255, 255  (min, max)
-cldif <- colorRampPalette(c('blue','white','red'))(100)
+## class      : RasterLayer 
+## dimensions : 432, 768, 331776  (nrow, ncol, ncell)
+## resolution : 1, 1  (x, y)
+## extent     : 0, 768, 0, 432  (xmin, xmax, ymin, ymax)
+## crs        : NA 
+## source     : memory
+## names      : layer 
+## values     : -255, 255  (min, max)
+cldif <- colorRampPalette(c("blue", "white", "red"))(100)
 plot(difen, col=cldif)
 
 
