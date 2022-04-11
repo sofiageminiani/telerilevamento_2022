@@ -1,21 +1,35 @@
 # Time series analysis of Greenland LST data
 
-library(raster) #richiamo la librearia che mi serve
-setwd("/Users/sofiageminiani/Desktop/lab_greenland") # setto/preparo la cartella di lavoro, uso la funzione con questo argomento perchè uso un Mac
 
+# install.packages("raster")
+library(raster) #richiamare la librearia necessaria
+
+#settare la cartella di lavoro - working directory
+setwd("/Users/sofiageminiani/desktop/lab/greenland") # Mac users
+# setwd("~/lab/") # Linux
+# setwd("C:/lab/") # Windows
+
+#importare immagini satellitari in R
 lst2000 <- raster("lst_2000.tif")
-lst2000 # premo invio e otterrò una serie di informazioni
+lst2000 # premendo invio ottengo le informazioni sottostanti
+## class      : RasterLayer 
+## dimensions : 1913, 2315, 4428595  (nrow, ncol, ncell)
+## resolution : 1546.869, 1546.898  (x, y)
+## extent     : -267676.7, 3313324, -1483987, 1475229  (xmin, xmax, ymin, ymax)
+## crs        : +proj=stere +lat_0=90 +lon_0=-33 +k=0.994 +x_0=2000000 +y_0=2000000 +datum=WGS84 +units=m +no_defs 
+## source     : lst_2000.tif 
+## names      : lst_2000 
+## values     : 0, 65535  (min, max)
 plot(lst2000) #l'immagine plottata è caratterizzata nella parte centrale da temperature più fredde
 
-# importo anche le restanti immagini
-
+# importare le restanti immagini
 lst2005 <- raster("lst_2005.tif")
 lst2010 <- raster("lst_2010.tif")
 lst2015 <- raster("lst_2015.tif")
 
 # creo una palette personalizzata di colori per la legenda
 cl <- colorRampPalette(c("blue", "light blue", "pink", "red")) (100)
-#creo un multiframe di 4 immagini usando la palette di colori per la legenda creata
+#creo un multiframe delle 4 immagini usando la palette di colori personalizzata
 par(mfrow=c(2,2))
 plot(lst2000, col = cl)
 plot(lst2005, col = cl)
@@ -26,8 +40,8 @@ plot(lst2015, col = cl)
 rlist <- list.files(pattern = "lst")
 rlist #premo invio e vedo in ordine tutti i file che ho dentro alla mia cartella di lavoro
 lapply(rlist, raster)
-import <- lapply(rlist, raster) # abbiamo messo insieme i singoli lst, le singole immagini
-#faccio lo stack ovvero creo un blocco comune di tutti i dati
+import <- lapply(rlist, raster) # i singoli lst, le singole immagini, sono stata messe insieme
+#faccio lo stack, ovvero creo un blocco comune di tutti i dati
 tgr <- stack(import)
 plot(tgr, col = cl) #ottengo il plot precedentemente ottenuto, ma in maniera più veloce
 
