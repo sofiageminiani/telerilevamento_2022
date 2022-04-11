@@ -1,8 +1,9 @@
-# richiamare le librerie che serviranno
-library(raster) 
+# install.packages("raster")
 # install.packages("rgdal"), come Mac user mi veniva richiesta l'installazione di questo pacchetto
 # install.packages("RStoolbox)
 # install.packages(“rasterdiv”)
+# richiamare le librerie che serviranno
+library(raster)
 # libray(rgdal) non è da richiamare perchè fa parte del pacchetto raster
 library(RStoolbox)
 library(rasterdiv)
