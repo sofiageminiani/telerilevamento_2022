@@ -48,8 +48,49 @@ plot(l2006c$map)
 freq(l1992c$map)
 # la classe 1 ha 35021 pixel
 # la classe 2 ha 306271 pixel
+tot92 <- 341292 #numero di pixel totale dell'immagine satellitare
+# proporzione di classe foresta
+pro_forest_92 <- 306271/tot92 #l'89.7387% corrisponde alla percentuale di foresta
+# percentuale della classe foresta
+perc_forest_92 <- (306271*100)/tot92
+# proporzione di classe area agricola
+pro_forest_92 <- 35021/tot92 #l'10.2613% corrisponde alla percentuale di area agricola
+# percentuale della classe foresta
+perc_forest_92 <- (35021*100)/tot92
+
 freq(l2006c$map)
 # la classe 1 ha 164384 pixel
 # la classe 2 ha 178342 pixel
+# proporzione di classe
+tot06 <- 342726 # numero di pixel dell'immagine satellitare del 2006
+pro_forest_06 <- 178342/tot06
+# percentuale della classe foresta
+perc_forest_06 <- (178342*100)/tot06 # 52.03632% di foresta
+# proporzione classe zona agricola
+perc_agr_06 <- 100 - perc_forest_06 # 47.96368% di aree agricole
 
+# costruire un dataframe
+# colonne (o fields)
+class <- c("Forest", "Agricolture") # è un vettore
+percent_1992 <- c(89.7387, 10.2613)
+percent_2006 <- c(52.03632, 47.96368)
+multitemporal <- data.frame(class, percent_1992, percent_2006)
+##        class percent_1992 percent_2006
+## 1      Forest      89.7387     52.03632
+## 2 Agricolture      10.2613     47.96368
+View(multitemporal)
+ggplot(multitemporal, aes(x=class, y=percent_1992, color=class))+
+geom_bar(stat="identity", fill="white")
+# dati del 2006
+ggplot(multitemporal, aes(x=class, y=percent_2006, color=class))+
+geom_bar(stat="identity", fill="white")
 
+pdf("percentages_1992")
+ggplot(multitemporal, aes(x=class, y=percent_1992, color=class))+
+geom_bar(stat="identity", fill="white")
+dev.off()
+
+pdf("percentages_2006")
+ggplot(multitemporal, aes(x=class, y=percent_2006, color=class))+
+geom_bar(stat="identity", fill="white")
+dev.off()
