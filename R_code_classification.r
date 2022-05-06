@@ -1,6 +1,8 @@
+# install.packages("raster")
+# install.packages("RStoolbox")
 library(raster)
 library(RStoolbox)
-setwd("/Users/sofiageminiani/desktop/lab") #setto/preparo la cartella di lavoro
+setwd("/Users/sofiageminiani/desktop/lab") # richiamare la cartella di lavoro
 
 # importazione immagine satellitare
 so <- brick("Solar_Orbiter_s_first_views_of_the_Sun_pillars.jpg")
