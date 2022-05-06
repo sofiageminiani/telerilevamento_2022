@@ -4,10 +4,12 @@
 # install.packages("RStoolbox")
 # install.packages("ggplot2")
 # install.packages("patchwork")
+# install.packages("viridis")
 library(raster)
 library(RStoolbox)
 library(ggplot2)
 library(patchwork)
+library(viridis)
 
 # settaggio della cartella di lavoro
 # setwd("~/lab/") # Linux
@@ -47,6 +49,92 @@ g1 <- ggRGB(p224r63_2011, 4, 3, 2)
 g2 <- ggRGB(p224r63_2011res, 4, 3, 2)
 g1+g2
 
-p224r63_2011res100 <- aggregate(p224r63_2011, fact=30)
+# ricampiono con un fact 100x100 pixel
+p224r63_2011res100 <- aggregate(p224r63_2011, fact=100)
 g3 <- ggRGB(p224r63_2011res100, 4, 3, 2)
 g1+g2+g3
+
+######## DAY 2: PCA analysis ######## 
+
+p224r63_2011res_pca <- rasterPCA(p224r63_2011res)
+p224r63_2011res_pca # premendo si ottengono le seguenti informazioni
+## $call
+## rasterPCA(img = p224r63_2011res)
+##
+## $model
+## Call:
+## princomp(cor = spca, covmat = covMat[[1]])
+##
+## Standard deviations:
+##       Comp.1       Comp.2       Comp.3       Comp.4       Comp.5       Comp.6       Comp.7 
+## 1.2050671158 0.0461548804 0.0151509526 0.0045752199 0.0018413569 0.0012333745 0.0007595368 
+##
+## 7  variables and  41233 observations.
+##
+## $map
+## class      : RasterBrick 
+## dimensions : 150, 297, 44550, 7  (nrow, ncol, ncell, nlayers)
+## resolution : 300, 300  (x, y)
+## extent     : 579765, 668865, -522735, -477735  (xmin, xmax, ymin, ymax)
+## crs        : +proj=utm +zone=22 +datum=WGS84 +units=m +no_defs 
+## source     : memory
+## names      :         PC1,         PC2,         PC3,         PC4,         PC5,         PC6,         PC7 
+## min values : -1.96808589, -0.30213565, -0.07212294, -0.02976086, -0.02695825, -0.01712903, -0.00744772 
+## max values : 6.065265723, 0.142898435, 0.114509984, 0.056825372, 0.008628344, 0.010537396, 0.005594299 
+##
+##
+## attr(,"class")
+## [1] "rasterPCA" "RStoolbox"
+
+# questa funzione ha creato la $call, il $model e la $map
+
+summary(p224r63_2011res_pca)
+##      Length Class       Mode
+## call       2 -none-      call
+## model      7 princomp    list
+## map   311850 RasterBrick S4 
+
+summary(p224r63_2011res_pca$model)
+## Importance of components:
+##                           Comp.1      Comp.2       Comp.3       Comp.4       Comp.5
+## Standard deviation     1.2050671 0.046154880 0.0151509526 4.575220e-03 1.841357e-03
+## Proportion of Variance 0.9983595 0.001464535 0.0001578136 1.439092e-05 2.330990e-06
+## Cumulative Proportion  0.9983595 0.999824022 0.9999818357 9.999962e-01 9.999986e-01
+##                              Comp.6       Comp.7
+## Standard deviation     1.233375e-03 7.595368e-04
+## Proportion of Variance 1.045814e-06 3.966086e-07
+## Cumulative Proportion  9.999996e-01 1.000000e+00
+
+plot(p224r63_2011res_pca$map)
+g1 <- ggplot()+
+geom_raster(p224r63_2011res_pca$map, mapping=aes(x=x, y=y, fill=PC1))+
+scale_fill_viridis(option = "inferno") +
+ggtitle("PC1")
+
+g2 <- ggplot()+
+geom_raster(p224r63_2011res_pca$map, mapping=aes(x=x, y=y, fill=PC7))+
+scale_fill_viridis(option = "inferno") +
+ggtitle("PC7")
+
+g1+g2
+
+g3 <- ggplot()+
+geom_raster(p224r63_2011res, mapping=aes(x=x, y=y, fill=B4_sre))+
+scale_fill_viridis(option = "inferno")+
+ggtitle("NIR")
+g1+g3
+
+g4 <- ggRGB(p224r63_2011res, 4, 3, 2)
+g1+g4
+
+plotRGB(p224r63_2011, 2, 3, 4, stretch="lin")
+
+#manca un plot
+
+plotRGB(p224r63_2011, 2, 3, 4, stretch="lin")
+
+pc1map <- p224r63_2011res_pca$map[[1]]
+pc2map <- p224r63_2011res_pca$map[[2]]
+pc3map <- p224r63_2011res_pca$map[[3]]
+plotRGB(p224r63_2011res_pca$map, 1, 2, 3, stretch="lin")
+plotRGB(p224r63_2011res_pca$map, 5, 6, 7, stretch="lin")
