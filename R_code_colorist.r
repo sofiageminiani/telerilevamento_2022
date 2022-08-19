@@ -16,6 +16,14 @@ fiespa_occ # premo invio ed ottengo le seguenti informazioni
 ## min values :         0,         0,         0,         0,         0,         0,         0,         0,         0,         0,         0,         0 
 ## max values : 0.8538026, 0.8272926, 0.7993844, 0.7805922, 0.7799550, 0.7745436, 0.7626938, 0.7867995, 0.7790458, 0.7896419, 0.8158410, 0.8681034 
 
+### ricorda ###
+# il flusso di lavoro nella utilizzazione del pacchetto colorist:
+# 1. metrics
+# 2. palettes
+# 3.maps
+# 4. legends
+### ###
+
 # metrics
 met1 <- metrics_pull(fiespa_occ)
 
