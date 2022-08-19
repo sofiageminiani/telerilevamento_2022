@@ -10,13 +10,14 @@
 # 4. R_code_classification.r
 # 5. R_code_landcover.r
 # 6. R_code_variability.r
-# 7. R_code_
+# 7. R_code_variability2.r
 # 8. R_code_
 # 9. R_code_
 
 #######################
 
 # 1. R_code_RemoteSensing.r
+
 
 # questo è il primo script che useremo a lezione
 
@@ -193,6 +194,7 @@ plotRGB(l2011, r=4, g=3, b=2, stretch = "lin")
 
 # 2. R_code_spectral_indices
 
+
 # install.packages("raster")
 # install.packages("rgdal"), come Mac user mi veniva richiesta l'installazione di questo pacchetto
 # install.packages("RStoolbox)
@@ -367,6 +369,7 @@ plot(copNDVI)
 
 # 3. R_code_time_series_analysis.r
 
+
 # install.packages("raster")
 library(raster) #richiamare la librearia necessaria
 
@@ -493,6 +496,7 @@ plot(difen, col=cldif)
 #######################
 
 # 4. R_code_classification.r
+
 
 # install.packages("raster")
 # install.packages("RStoolbox")
@@ -623,6 +627,7 @@ plotRGB(gc, r=1, g=2, b=3, stretch="hist")
 
 # 5. R_code_landcover.r
 
+
 # Codice per generare mappe di land cover da immagini satellitari
 
 # per informazioni: https://patchwork.data-imaginist.com/
@@ -723,3 +728,65 @@ dev.off()
 #######################
 
 # 6. R_code_variability.r
+
+
+# santinel lanciato da esa ha una risoluzione di 10 metri
+# variazioni geostrutturali e le variazioni ecologiche, landcover, fino ai boschi
+
+# install.packages("viridis")
+library(raster)
+library(RStoolbox) # per visualizzare le immagini e svolgere calcoli di variabilità
+library(ggplot2) # per ggplot plotting
+library(patchwork)
+setwd("/Users/sofiageminiani/Desktop/lab")
+sen <- brick("sentinel.png")
+sen
+## class      : RasterBrick 
+## dimensions : 794, 798, 633612, 4  (nrow, ncol, ncell, nlayers)
+## resolution : 1, 1  (x, y)
+## extent     : 0, 798, 0, 794  (xmin, xmax, ymin, ymax)
+## crs        : NA 
+## source     : sentinel.png 
+## names      : sentinel.1, sentinel.2, sentinel.3, sentinel.4 
+## min values :          0,          0,          0,          0 
+## max values :        255,        255,        255,        255 
+
+ggRGB(sen, 1, 2, 3, stretch="lin")
+# esercizio: plottare i due grafici insieme
+g1 <- ggRGB(sen, 1, 2, 3)
+g2 <- ggRGB(sen, 2, 1, 3)
+g1+g2
+
+# NIR, NDVI, analisi multivariata e scegliamo quello con più informazioni al suo interno
+#calcolo della variabilità NIR
+nir <- sen[[1]]
+plot(nir)
+sd1 <- focal(nir, matrix(1/9, 3, 3), fun=sd)
+clsd <- colorRampPalette(c("blue", "green", "pink", "magenta", "orange", "brown", "red", "yellow"))(100)
+plot(sd1, col=clsd)
+
+# plottare con ggplot
+ggplot()+
+geom_raster(sd, mapping=aes(x=x, y=y, fill=layer))
+
+# con viridis
+# https://cran.r-project.org/web/packages/viridis/vignettes/intro-to-viridis.html
+ggplot()+
+geom_raster(sd, mapping=aes(x=x, y=y, fill=layer))+
+scale_fill_viridis()+
+ggtitle("Standard deviationof by viridis")
+
+# con cividis
+ggplot()+
+geom_raster(sd, mapping=aes(x=x, y=y, fill=layer))+
+scale_fill_viridis(option="cividis")+
+ggtitle("Standard deviationof by viridis")
+
+# esercizio: fare lo stesso calcolo con una finestra 7x7
+sd7 <- focal(nir, matrix(1/9, 3, 3), fun=sd)
+clsd <- colorRampPalette(c("blue", "green", "pink", "magenta", "orange", "brown", "red", "yellow"))(100)
+plot(sd7, col=clsd)
+
+#######################
+
+# 7. R_code_variability2.r
