@@ -1,3 +1,5 @@
+# R_code_spectral_indices
+
 # install.packages("raster")
 # install.packages("rgdal"), come Mac user mi veniva richiesta l'installazione di questo pacchetto
 # install.packages("RStoolbox)
