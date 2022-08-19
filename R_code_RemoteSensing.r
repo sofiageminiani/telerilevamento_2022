@@ -1,3 +1,5 @@
+# R_code_RemoteSensing.r
+
 # questo è il primo script che useremo a lezione
 
 # installazione pacchetto raster usando la funzione install.packages("raster")
