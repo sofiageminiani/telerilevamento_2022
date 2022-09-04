@@ -56,19 +56,19 @@ plot1+plot3+plot5+plot7
 #plotto le 4 immagini per presentarle in IR
 plot2+plot4+plot6+plot8
 
+
 # mi focalizzo su 2013 e 2021
 
-# time series analysis 
+
 
 # calcolo DVI e NDVI per intervalli temporali
 
 # realizzazione di una mappa di land cover
-
 # unsuperClass dell'immagine 2013
 set.seed(42) #rendo le classi discrete
-clasimm2013<-unsuperClass(lar2013, nClasses=4) #applico la funzione unsuperclass con 4 classi
-plot(clasimm2013$map, col=cl) #plot della mappa delle classi #si vedono le aree bagnate
-freq(clasimm2013$map) #vedo la conta dei pixel
+m2013c<-unsuperClass(mad2013, nClasses=4) #applico la funzione unsuperclass con 4 classi
+plot(m2013c$map, col=cl) #plot della mappa delle classi
+freq(m2013c$map) #vedo la conta dei pixel
 df1<-data.frame(freq(clasimm2013$map)) #creo un piccolo dataframe con i pixel categorizzati
 sum2013<-sum(df1$count) #sommo tutta la colonna dei count
 df1$perc_2013<-(df1$count/sum2013)*100 #aggiungo un vettore interno al dataframe con le percentuali del 2013
