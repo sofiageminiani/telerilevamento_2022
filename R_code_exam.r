@@ -2,10 +2,17 @@
 
 # area di studio: Madagascar in particular Kirindy-Ambadira Forest Complex (KAFC), path and raw
 
+# install.packages("rgdal")
+# install.packages("raster")
+# install.packages("RStoolbox")
+# install.packages("rasterdiv")
+# install.packages("ggplot2")
+# install.packages("patchwork")
+
 # richiamo le librerie necessarie previa installazione dei relativi pacchetti
+library(rgdal) #
 library(raster)
 library(RStoolbox)
-library(rgdal)
 library(rasterdiv)
 library(ggplot2)
 library(patchwork)
