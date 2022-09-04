@@ -1,6 +1,6 @@
 # esame di telerilevamento geo-ecologico 2022, Prof. Duccio Rocchini
 
-# area di studio:
+# area di studio: Madagascar
 
 # settaggio della working directory
 
