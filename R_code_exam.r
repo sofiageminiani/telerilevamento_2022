@@ -23,7 +23,7 @@ setwd("/Users/sofiageminiani/desktop/lab/Esame_telerilevamento")
 # importazione delle immagini da analizzare
 
 # 2013
-rlist<-list.files(pattern="LC08_L1TP_161028_20130506_20170504_01_T1_B") #creo una lista cercando elementi comuni
+rlist<-list.files(pattern="LC08_L1TP_160074_20130515_20200912_02_T1_B") #creo una lista cercando elementi comuni
 import<-lapply(rlist,raster) #con lapply applico la funzione citata a tutta la lista
 mad2013<-stack(import) #unisce in un singolo file quelli che erano in lista
 plot1<-ggRGB(mad2013, 4,3,2, stretch="lin")+labs(title="2013") #plot in RGB
