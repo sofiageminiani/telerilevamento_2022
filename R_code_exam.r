@@ -26,29 +26,69 @@ setwd("/Users/sofiageminiani/desktop/lab/Esame_telerilevamento")
 rlist<-list.files(pattern="LC08_L1TP_160074_20130515_20200912_02_T1_B") #creo una lista cercando elementi comuni
 import<-lapply(rlist,raster) #con lapply applico la funzione citata a tutta la lista
 mad2013<-stack(import) #unisce in un singolo file quelli che erano in lista
+mad2013 # cliccando invio ottengo le seguenti informazioni
+## class      : RasterStack 
+## dimensions : 7331, 7571, 55503001, 8  (nrow, ncol, ncell, nlayers)
+## resolution : 30, 30  (x, y)
+## extent     : 419085, 646215, -2347215, -2127285  (xmin, xmax, ymin, ymax)
+## crs        : +proj=utm +zone=38 +datum=WGS84 +units=m +no_defs 
+## names      : LC08_L1TP//2_02_T1_B1, LC08_L1TP//2_02_T1_B2, LC08_L1TP//2_02_T1_B3, LC08_L1TP//2_02_T1_B4, LC08_L1TP//2_02_T1_B5, LC08_L1TP//2_02_T1_B6, LC08_L1TP//2_02_T1_B7, LC08_L1TP//2_02_T1_B9 
+## min values :                     0,                     0,                     0,                     0,                     0,                     0,                     0,                     0 
+## max values :                 65535,                 65535,                 65535,                 65535,                 65535,                 65535,                 65535,                 65535 
+
 plot1<-ggRGB(mad2013, 4,3,2, stretch="lin")+labs(title="2013") #plot in RGB
 plot2<-ggRGB(mad2013, 5,4,3, stretch="hist")+labs(title="2013 IR") #falsi colori IR
 
 # 2016
-rlist<-list.files(pattern="LC08_L1TP_161028_20130506_20170504_01_T1_B") #creo una lista cercando elementi comuni
+rlist<-list.files(pattern="LC08_L1TP_160074_20160523_20200906_02_T1_B") #creo una lista cercando elementi comuni
 import<-lapply(rlist,raster) #con lapply applico la funzione citata a tutta la lista
 mad2016<-stack(import) #unisce in un singolo file quelli che erano in lista
-plot3<-ggRGB(mad2016, 4,3,2, stretch="lin")+labs(title="2016") #plot in RGB
-plot4<-ggRGB(mad2016, 5,4,3, stretch="hist")+labs(title="2016 IR") #falsi colori IR
+mad2016 # cliccando invio ottengo le seguenti informazioni
+## class      : RasterStack 
+## dimensions : 7771, 7671, 59611341, 8  (nrow, ncol, ncell, nlayers)
+## resolution : 30, 30  (x, y)
+## extent     : 418485, 648615, -2353815, -2120685  (xmin, xmax, ymin, ymax)
+## crs        : +proj=utm +zone=38 +datum=WGS84 +units=m +no_defs 
+## names      : LC08_L1TP//6_02_T1_B1, LC08_L1TP//6_02_T1_B2, LC08_L1TP//6_02_T1_B3, LC08_L1TP//6_02_T1_B4, LC08_L1TP//6_02_T1_B5, LC08_L1TP//6_02_T1_B6, LC08_L1TP//6_02_T1_B7, LC08_L1TP//6_02_T1_B9 
+## min values :                     0,                     0,                     0,                     0,                     0,                     0,                     0,                     0 
+## max values :                 65535,                 65535,                 65535,                 65535,                 65535,                 65535,                 65535,                 65535 
+
+plot3<-ggRGB(mad2016, 4,3,2, stretch="lin")+labs(title="2016") # plot in RGB
+plot4<-ggRGB(mad2016, 5,4,3, stretch="hist")+labs(title="2016 IR") # falsi colori IR
 
 # 2019
-rlist<-list.files(pattern="LC08_L1TP_161028_20130506_20170504_01_T1_B") #creo una lista cercando elementi comuni
+rlist<-list.files(pattern="LC08_L1TP_160074_20190430_20200829_02_T1_B") #creo una lista cercando elementi comuni
 import<-lapply(rlist,raster) #con lapply applico la funzione citata a tutta la lista
 mad2019<-stack(import) #unisce in un singolo file quelli che erano in lista
-plot5<-ggRGB(mad2019, 4,3,2, stretch="lin")+labs(title="2019") #plot in RGB
-plot6<-ggRGB(mad2019, 5,4,3, stretch="hist")+labs(title="2019 IR") #falsi colori IR
+mad2019 # cliccando invio ottengo le seguenti informazioni
+## class      : RasterStack 
+## dimensions : 7771, 7661, 59533631, 8  (nrow, ncol, ncell, nlayers)
+## resolution : 30, 30  (x, y)
+## extent     : 419385, 649215, -2353815, -2120685  (xmin, xmax, ymin, ymax)
+## crs        : +proj=utm +zone=38 +datum=WGS84 +units=m +no_defs 
+## names      : LC08_L1TP//9_02_T1_B1, LC08_L1TP//9_02_T1_B2, LC08_L1TP//9_02_T1_B3, LC08_L1TP//9_02_T1_B4, LC08_L1TP//9_02_T1_B5, LC08_L1TP//9_02_T1_B6, LC08_L1TP//9_02_T1_B7, LC08_L1TP//9_02_T1_B9 
+## min values :                     0,                     0,                     0,                     0,                     0,                     0,                     0,                     0 
+## max values :                 65535,                 65535,                 65535,                 65535,                 65535,                 65535,                 65535,                 65535 
+
+plot5<-ggRGB(mad2019, 4,3,2, stretch="lin")+labs(title="2019") # plot in RGB
+plot6<-ggRGB(mad2019, 5,4,3, stretch="hist")+labs(title="2019 IR") # falsi colori IR
 
 # 2021
-rlist<-list.files(pattern="LC08_L1TP_161028_20130506_20170504_01_T1_B") #creo una lista cercando elementi comuni
+rlist<-list.files(pattern="LC08_L1TP_160074_20210521_20210529_02_T1_B") #creo una lista cercando elementi comuni
 import<-lapply(rlist,raster) #con lapply applico la funzione citata a tutta la lista
 mad2021<-stack(import) #unisce in un singolo file quelli che erano in lista
-plot7<-ggRGB(mad2021, 4,3,2, stretch="lin")+labs(title="2021") #plot in RGB
-plot8<-ggRGB(mad2021, 5,4,3, stretch="hist")+labs(title="2021 IR") #falsi colori IR
+mad2021 # cliccando invio ottengo le seguenti informazioni
+## class      : RasterStack 
+## dimensions : 7771, 7661, 59533631, 8  (nrow, ncol, ncell, nlayers)
+## resolution : 30, 30  (x, y)
+## extent     : 416985, 646815, -2353815, -2120685  (xmin, xmax, ymin, ymax)
+## crs        : +proj=utm +zone=38 +datum=WGS84 +units=m +no_defs 
+## names      : LC08_L1TP//9_02_T1_B1, LC08_L1TP//9_02_T1_B2, LC08_L1TP//9_02_T1_B3, LC08_L1TP//9_02_T1_B4, LC08_L1TP//9_02_T1_B5, LC08_L1TP//9_02_T1_B6, LC08_L1TP//9_02_T1_B7, LC08_L1TP//9_02_T1_B9 
+## min values :                     0,                     0,                     0,                     0,                     0,                     0,                     0,                     0 
+## max values :                 65535,                 65535,                 65535,                 65535,                 65535,                 65535,                 65535,                 65535 
+
+plot7<-ggRGB(mad2021, 4,3,2, stretch="lin")+labs(title="2021") # plot in RGB
+plot8<-ggRGB(mad2021, 5,4,3, stretch="hist")+labs(title="2021 IR") # falsi colori IR
 
 #plotto le 4 immagini per presentarle
 plot1+plot3+plot5+plot7
@@ -57,7 +97,7 @@ plot1+plot3+plot5+plot7
 plot2+plot4+plot6+plot8
 
 
-# mi focalizzo su 2013 e 2021
+# prendo in considerazione gli anni 2013 e 2021
 
 
 
