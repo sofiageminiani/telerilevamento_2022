@@ -96,21 +96,37 @@ plot1+plot3+plot5+plot7
 #plotto le 4 immagini per presentarle in IR
 plot2+plot4+plot6+plot8
 
-
-# prendo in considerazione gli anni 2013 e 2021
-# calcolo DVI e NDVI per intervalli temporali
+# calcolo DVI
 dvi2013 = mad2013[[5]]-mad2013[[4]]
 dvi2016 = mad2016[[5]]-mad2016[[4]]
 dvi2019 = mad2019[[5]]-mad2019[[4]]
 dvi2021 = mad2021[[5]]-mad2021[[4]]
 
-# realizzazione di una mappa di land cover
+# calcolo NDVI
+ndvi2013 = dvi2013 / (mad2013[[5]]+mad2013[[4]])
+ndvi2016 = dvi2016 / (mad2016[[5]]+mad2016[[4]])
+ndvi2019 = dvi2019 / (mad2019[[5]]+mad2019[[4]])
+ndvi2021 = dvi2021 / (mad2021[[5]]+mad2021[[4]])
+
+#differenza NDVI tra gli anni 2013 e 2021
+cl <- colorRampPalette(c("blue", "white", "red")) (200)
+ndvi2013res<-resample(ndvi2013,ndvi2021,method="bilinear") # ricampionare per differente estensione dei due raster
+ndvi_diff <- ndvi2013res-ndvi2021
+par(mfrow=c(3,1)) # realizzo un multiframe
+plot(ndvi2013, col=cl, main="NDVI 2013")
+plot(ndvi2021, col=cl, main="NDVI 2021")
+plot(ndvi_diff, col=cl, main="NDVI difference between 2013 and 2021)
+
+
+# realizzazione di una mappa di Land cover
 # unsuperClass dell'immagine 2013
 set.seed(42) #rendo le classi discrete
 m2013c<-unsuperClass(mad2013, nClasses=4) #applico la funzione unsuperclass con 4 classi
 plot(m2013c$map, col=cl) #plot della mappa delle classi
-freq(m2013c$map) #vedo la conta dei pixel
+freq(m2013c$map) # vedo la conta dei pixel
+
 df1<-data.frame(freq(clasimm2013$map)) #creo un piccolo dataframe con i pixel categorizzati
+
 sum2013<-sum(df1$count) #sommo tutta la colonna dei count
 df1$perc_2013<-(df1$count/sum2013)*100 #aggiungo un vettore interno al dataframe con le percentuali del 2013
 rownames(df1)<-c("classe_1","classe_2","classe_3","classe_4") #rinomino le righe
