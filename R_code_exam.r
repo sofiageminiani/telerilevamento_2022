@@ -98,10 +98,11 @@ plot2+plot4+plot6+plot8
 
 
 # prendo in considerazione gli anni 2013 e 2021
-
-
-
 # calcolo DVI e NDVI per intervalli temporali
+dvi2013 = mad2013[[5]]-mad2013[[4]]
+dvi2016 = mad2016[[5]]-mad2016[[4]]
+dvi2019 = mad2019[[5]]-mad2019[[4]]
+dvi2021 = mad2021[[5]]-mad2021[[4]]
 
 # realizzazione di una mappa di land cover
 # unsuperClass dell'immagine 2013
