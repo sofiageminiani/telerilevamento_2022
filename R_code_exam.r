@@ -120,10 +120,76 @@ plot(ndvi_diff, col=cl, main="NDVI difference between 2013 and 2021")
 
 # realizzazione di una mappa di Land cover
 # unsuperClass dell'immagine 2013
-set.seed(42) #rendo le classi discrete
-m2013c <- unsuperClass(mad2013, nClasses=4) #applico la funzione unsuperclass con 4 classi
-plot(m2013c$map, col=cl) #plot della mappa delle classi
-freq(m2013c$map) # vedo la conta dei pixel
+set.seed(17) #rendo le classi discrete
+mad2013c <- unsuperClass(mad2013, nClasses=4) # applico la funzione unsuperclass con 4 classi
+mad2013c
+## unsuperClass results
+
+##*************** Model ******************
+##$model
+##K-means clustering with 4 clusters of sizes 2506, 3040, 3834, 620
+
+##Cluster centroids:
+##  LC08_L1TP_160074_20130515_20200912_02_T1_B1
+##1                                    9409.491
+##2                                    8775.979
+##3                                    8983.708
+##4                                   10592.624
+##  LC08_L1TP_160074_20130515_20200912_02_T1_B2
+##1                                    8877.249
+##2                                    8021.873
+##3                                    8336.796
+##4                                   10278.739
+##  LC08_L1TP_160074_20130515_20200912_02_T1_B3
+##1                                    8775.857
+##2                                    7492.222
+##3                                    7958.727
+##4                                   10650.861
+##  LC08_L1TP_160074_20130515_20200912_02_T1_B4
+##1                                    9478.174
+##2                                    7049.982
+##3                                    8161.794
+##4                                   11974.574
+##  LC08_L1TP_160074_20130515_20200912_02_T1_B5
+##1                                    13793.69
+##2                                    12509.02
+##3                                    12449.17
+##4                                    16441.05
+##  LC08_L1TP_160074_20130515_20200912_02_T1_B6
+##1                                   15293.137
+##2                                    9861.683
+##3                                   12693.525
+##4                                   18105.334
+##  LC08_L1TP_160074_20130515_20200912_02_T1_B7
+##1                                   11373.508
+##2                                    7330.608
+##3                                    9475.182
+##4                                   14002.126
+##  LC08_L1TP_160074_20130515_20200912_02_T1_B9
+##1                                    5053.075
+##2                                    5033.896
+##3                                    5039.896
+##4                                    5118.569
+
+##Within cluster sum of squares by cluster:
+##[1]  9520701381 23439281432 13082188534 10140087449
+
+##*************** Map ******************
+##$map
+##class      : RasterLayer 
+##dimensions : 7331, 7571, 55503001  (nrow, ncol, ncell)
+##resolution : 30, 30  (x, y)
+##extent     : 419085, 646215, -2347215, -2127285  (xmin, xmax, ymin, ymax)
+##crs        : +proj=utm +zone=38 +datum=WGS84 +units=m +no_defs 
+##source     : r_tmp_2022-09-06_163848_599_47582.grd 
+##names      : class 
+##values     : 1, 4  (min, max)
+
+clg <- colorRampPalette(c("yellow", "red", "blue", "black")) (200)
+plot(m2013c$map, col=clg)
+par(mfrow=c(2,1))
+plot(m2013c$map, col=clg)
+plotRGB(mad2013, 4, 3, 2, stretch="hist")
 
 df1<-data.frame(freq(clasimm2013$map)) #creo un piccolo dataframe con i pixel categorizzati
 
