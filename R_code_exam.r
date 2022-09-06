@@ -206,4 +206,3 @@ p9<-ggplot(df1,aes(x=classe,y=perc_2013, fill=classe))+
 
 
 
-# 
