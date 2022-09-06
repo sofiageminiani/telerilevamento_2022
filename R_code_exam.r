@@ -1,6 +1,6 @@
 # esame di telerilevamento geo-ecologico 2022, Prof. Duccio Rocchini
 
-# area di studio: Madagascar in particular Kirindy-Ambadira Forest Complex (KAFC), path and raw
+# area di studio: Madagascar in particular Kirindy-Ambadira Forest Complex (KAFC), path 160 and raw 74
 
 # install.packages("rgdal")
 # install.packages("raster")
@@ -108,20 +108,20 @@ ndvi2016 = dvi2016 / (mad2016[[5]]+mad2016[[4]])
 ndvi2019 = dvi2019 / (mad2019[[5]]+mad2019[[4]])
 ndvi2021 = dvi2021 / (mad2021[[5]]+mad2021[[4]])
 
-#differenza NDVI tra gli anni 2013 e 2021
+# differenza NDVI tra gli anni 2013 e 2021
 cl <- colorRampPalette(c("blue", "white", "red")) (200)
 ndvi2013res<-resample(ndvi2013,ndvi2021,method="bilinear") # ricampionare per differente estensione dei due raster
 ndvi_diff <- ndvi2013res-ndvi2021
 par(mfrow=c(3,1)) # realizzo un multiframe
 plot(ndvi2013, col=cl, main="NDVI 2013")
 plot(ndvi2021, col=cl, main="NDVI 2021")
-plot(ndvi_diff, col=cl, main="NDVI difference between 2013 and 2021)
+plot(ndvi_diff, col=cl, main="NDVI difference between 2013 and 2021")
 
 
 # realizzazione di una mappa di Land cover
 # unsuperClass dell'immagine 2013
 set.seed(42) #rendo le classi discrete
-m2013c<-unsuperClass(mad2013, nClasses=4) #applico la funzione unsuperclass con 4 classi
+m2013c <- unsuperClass(mad2013, nClasses=4) #applico la funzione unsuperclass con 4 classi
 plot(m2013c$map, col=cl) #plot della mappa delle classi
 freq(m2013c$map) # vedo la conta dei pixel
 
