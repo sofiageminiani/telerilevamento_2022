@@ -118,61 +118,69 @@ plot(ndvi2021, col=cl, main="NDVI 2021")
 plot(ndvi_diff, col=cl, main="NDVI difference between 2013 and 2021")
 
 
-# realizzazione di una mappa di Land cover
+
+# GVMI 2013 and 2021
+gvmi_2013 <- ((mad2013[[5]]+0.1)-(mad2013[[7]]+0.02))/((mad2013[[5]]+0.1)+(mad2013[[7]]+0.02))
+gvmi_2021 <- ((mad2021[[5]]+0.1)-(mad2021[[7]]+0.02))/((mad2021[[5]]+0.1)+(mad2021[[7]]+0.02))
+par(mfrow=c(2,1))
+plot(gvmi_2013)
+plot(gvmi_2021)
+
+#GEMI 2013
+gemi_2013 = n (1 - 0.25*n) - ((mad2013[[4]] - 0.125)/(1 - mad2013[[4]]))
+n = ( 2 * ( mad2013[[5]] ^2 - mad2013[[4]] ^2) + 1.5 * mad2013[[5]] + 0.5 * mad2013[[4]] ) / ( mad2013[[5]] + mad2013[[4]] + 0.5 )
+# NIR = mad2013[[5]]
+# red = mad2013[[4]]
+
+# GEMI 2021
+gemi_2021 = n (1 - 0.25*n) - ((mad2021[[4]] - 0.125)/(1 - mad2021[[4]]))
+n = ( 2 * ( mad2021[[5]] ^2 - mad2021[[4]] ^2) + 1.5 * mad2021[[5]] + 0.5 * mad2021[[4]] ) / ( mad2021[[5]] + mad2021[[4]] + 0.5 )
+# NIR = mad2021[[5]]
+# red = mad2021[[4]]
+par(mfrow=c(2,1))
+plot(gemi_2013)
+plot(gemi_2021)
+
+# Realizzazione di una mappa di Land cover:
 # unsuperClass dell'immagine 2013
 set.seed(17) #rendo le classi discrete
-mad2013c <- unsuperClass(mad2013, nClasses=4) # applico la funzione unsuperclass con 4 classi
-mad2013c
-## unsuperClass results
+mad2013c2 <- unsuperClass(mad2013, nClasses=2) # applico la funzione unsuperclass con 2 classi
+mad2013c2
+
+##unsuperClass results
 
 ##*************** Model ******************
 ##$model
-##K-means clustering with 4 clusters of sizes 2506, 3040, 3834, 620
+##K-means clustering with 2 clusters of sizes 3881, 6119
 
 ##Cluster centroids:
 ##  LC08_L1TP_160074_20130515_20200912_02_T1_B1
-##1                                    9409.491
-##2                                    8775.979
-##3                                    8983.708
-##4                                   10592.624
+##1                                    9525.938
+##2                                    8858.672
 ##  LC08_L1TP_160074_20130515_20200912_02_T1_B2
-##1                                    8877.249
-##2                                    8021.873
-##3                                    8336.796
-##4                                   10278.739
+##1                                    9012.793
+##2                                    8151.659
 ##  LC08_L1TP_160074_20130515_20200912_02_T1_B3
-##1                                    8775.857
-##2                                    7492.222
-##3                                    7958.727
-##4                                   10650.861
+##1                                    8949.758
+##2                                    7683.734
 ##  LC08_L1TP_160074_20130515_20200912_02_T1_B4
-##1                                    9478.174
-##2                                    7049.982
-##3                                    8161.794
-##4                                   11974.574
+##1                                    9689.552
+##2                                    7518.782
 ##  LC08_L1TP_160074_20130515_20200912_02_T1_B5
-##1                                    13793.69
-##2                                    12509.02
-##3                                    12449.17
-##4                                    16441.05
+##1                                    13956.70
+##2                                    12485.54
 ##  LC08_L1TP_160074_20130515_20200912_02_T1_B6
-##1                                   15293.137
-##2                                    9861.683
-##3                                   12693.525
-##4                                   18105.334
+##1                                    15393.68
+##2                                    11082.12
 ##  LC08_L1TP_160074_20130515_20200912_02_T1_B7
-##1                                   11373.508
-##2                                    7330.608
-##3                                    9475.182
-##4                                   14002.126
+##1                                   11550.675
+##2                                    8247.919
 ##  LC08_L1TP_160074_20130515_20200912_02_T1_B9
-##1                                    5053.075
-##2                                    5033.896
-##3                                    5039.896
-##4                                    5118.569
+##1                                    5060.743
+##2                                    5036.496
 
 ##Within cluster sum of squares by cluster:
-##[1]  9520701381 23439281432 13082188534 10140087449
+##[1] 43622210863 50423591043
 
 ##*************** Map ******************
 ##$map
@@ -181,108 +189,183 @@ mad2013c
 ##resolution : 30, 30  (x, y)
 ##extent     : 419085, 646215, -2347215, -2127285  (xmin, xmax, ymin, ymax)
 ##crs        : +proj=utm +zone=38 +datum=WGS84 +units=m +no_defs 
-##source     : r_tmp_2022-09-06_163848_599_47582.grd 
+##source     : r_tmp_2022-09-06_173122_967_09270.grd 
+##names      : class 
+##values     : 1, 2  (min, max)
+
+# plotto la mappa classificata e l'immagine satellitare con i colori reali
+par(mfrow=c(2,1))
+plot(mad2013c2$map)
+plotRGB(mad2013, 4, 3, 2, stretch="hist")
+
+# realizzazione della mappa di land cover
+freq(mad2013c2$map)
+# la classe 1 ha 15130125 pixel di 55503001 (fiumi+suolo+nuvole)
+# la classe 2 ha 23646341 pixel di 55503001 (foresta)
+# tolgo la classe NA=16726535 dal calcolo, quindi:
+tot2013 <- 38776466 # numero di pixel totali dell'immagine satellitare, tolti i pixel di NA
+# calcolo la percentuale di foresta nel 2013
+perc_forest2013 <- (23646341*100)/tot2013
+# 60.98117 % di foresta
+perc_other2013 <- 100-60.98117
+# 39.01883 % di suolo+fiumi+laghi+nuvole
+
+
+# unsuperClass dell'immagine satellitare del 2021
+set.seed(17) #rendo le classi discrete
+mad2021c2 <- unsuperClass(mad2021, nClasses=2) # applico la funzione unsuperclass con 2 classi
+mad2021c2 # premendo invio si ottengo le seguenti informazioni
+
+##unsuperClass results
+
+##*************** Model ******************
+##$model
+##K-means clustering with 2 clusters of sizes 3820, 6180
+
+##Cluster centroids:
+##  LC08_L1TP_160074_20210521_20210529_02_T1_B1 LC08_L1TP_160074_20210521_20210529_02_T1_B2
+##1                                    9375.834                                    8875.024
+##2                                    8886.261                                    8206.064
+##  LC08_L1TP_160074_20210521_20210529_02_T1_B3 LC08_L1TP_160074_20210521_20210529_02_T1_B4
+##1                                    8873.014                                    9657.645
+##2                                    7779.310                                    7696.796
+##  LC08_L1TP_160074_20210521_20210529_02_T1_B5 LC08_L1TP_160074_20210521_20210529_02_T1_B6
+##1                                    14061.53                                    15318.01
+##2                                    12574.96                                    11322.29
+##  LC08_L1TP_160074_20210521_20210529_02_T1_B7 LC08_L1TP_160074_20210521_20210529_02_T1_B9
+##1                                   11791.834                                    5045.072
+##2                                    8605.246                                    5042.991
+
+##Within cluster sum of squares by cluster:
+##[1] 35105803990 45737465738
+
+##*************** Map ******************
+##$map
+##class      : RasterLayer 
+##dimensions : 7771, 7661, 59533631  (nrow, ncol, ncell)
+##resolution : 30, 30  (x, y)
+##extent     : 416985, 646815, -2353815, -2120685  (xmin, xmax, ymin, ymax)
+##crs        : +proj=utm +zone=38 +datum=WGS84 +units=m +no_defs 
+##source     : r_tmp_2022-09-06_223356_1289_09270.grd 
+##names      : class 
+##values     : 1, 2  (min, max)
+
+# plotto la mappa classificata e l'immagine satellitare con i colori reali
+par(mfrow=c(2,1))
+plot(mad2021c2$map)
+plotRGB(mad2021, 4, 3, 2, stretch="hist")
+
+# realizzazione della mappa di land cover
+freq(mad2021c2$map)
+# la classe 1 ha 16104421 pixel di 59533631 (fiumi+suolo+nuvole)
+# la classe 2 ha 25524386 pixel di 59533631 (foresta)
+# tolgo la classe NA=17904824 dal calcolo quindi:
+tot2021 <-(16104421+25524386)
+# calcolo la percentuale di foresta nel 2021
+perc_forest2021 <- (25524386*100)/tot2021
+#61.31424% di foresta
+perc_other2021 <- 100-61.31424
+# 38.68576% di suolo+fiumi+nuvole
+
+### DATI FINALI ###
+# perc_forest2013: 61.31424% 
+# perc_forest2021: 42.87389%
+#
+# perc_other2021: 38.68576% 
+### ###
+
+# costruisco un dataframe
+class <- c("Forest", "Other")
+perc_2013 <- c(60.98117, 39.01883)
+perc_2021 <- c(61.31424, 38.68576)
+multitemporal <- data.frame(class, perc_forest2013, perc_forest2021)
+multitemporal # cliccando invio ottengo la seguente tabella
+##   class perc_forest2013 perc_forest2021
+##1 Forest        60.98117        61.31424
+##2  Other        39.01883        38.68576
+
+p9<-ggplot(multitemporal,aes(x=class,y=perc_2013, color=class))+
+  geom_bar(stat="identity", color="black")+
+  labs(x="Class",y="Percentage",title="Percentages for classification map of 2013")+
+  theme(legend.position="bottom")
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+# Realizzazione di una mappa di Land cover:
+# unsuperClass dell'immagine 2013
+set.seed(17) #rendo le classi discrete
+mad2013c <- unsuperClass(mad2013, nClasses=4) # applico la funzione unsuperclass con 4 classi
+mad2013c
+
+##unsuperClass results
+
+##*************** Model ******************
+##$model
+##K-means clustering with 4 clusters of sizes 1476, 2757, 4160, 1607
+
+##Cluster centroids:
+##  LC08_L1TP_160074_20130515_20200912_02_T1_B1 LC08_L1TP_160074_20130515_20200912_02_T1_B2
+##1                                    8796.923                                    8106.007
+##2                                    8806.082                                    8047.466
+##3                                    9106.699                                    8498.265
+##4                                    9975.039                                    9554.782
+##  LC08_L1TP_160074_20130515_20200912_02_T1_B3 LC08_L1TP_160074_20130515_20200912_02_T1_B4
+##1                                    7587.917                                    7556.715
+##2                                    7551.546                                    7046.279
+##3                                    8209.782                                    8605.622
+##4                                    9694.280                                   10723.641
+##  LC08_L1TP_160074_20130515_20200912_02_T1_B5 LC08_L1TP_160074_20130515_20200912_02_T1_B6
+##1                                    10261.89                                    9919.249
+##2                                    13772.57                                   10558.407
+##3                                    12780.25                                   13646.402
+##4                                    15109.89                                   16823.279
+##  LC08_L1TP_160074_20130515_20200912_02_T1_B7 LC08_L1TP_160074_20130515_20200912_02_T1_B9
+##1                                    7913.077                                    5036.509
+##2                                    7562.347                                    5034.008
+##3                                   10170.874                                    5043.298
+##4                                   12730.095                                    5081.701
+
+##Within cluster sum of squares by cluster:
+##[1] 11166399235  9478462792 15307390878 18875831090
+
+##*************** Map ******************
+##$map
+##class      : RasterLayer 
+##dimensions : 7331, 7571, 55503001  (nrow, ncol, ncell)
+##resolution : 30, 30  (x, y)
+##extent     : 419085, 646215, -2347215, -2127285  (xmin, xmax, ymin, ymax)
+##crs        : +proj=utm +zone=38 +datum=WGS84 +units=m +no_defs 
+##source     : r_tmp_2022-09-06_222038_1289_23236.grd 
 ##names      : class 
 ##values     : 1, 4  (min, max)
 
 clg <- colorRampPalette(c("yellow", "red", "blue", "black")) (200)
-plot(m2013c$map, col=clg)
 par(mfrow=c(2,1))
-plot(m2013c$map, col=clg)
+plot(mad2013c$map, col=clg)
 plotRGB(mad2013, 4, 3, 2, stretch="hist")
-
-freq(mad2013c$map)
-tot2013 <-
-# calcolo la percentuale di foresta nel 2013
-perc_forest2013 <- (n*100)/tot2013
-
-sum2013<-sum(df1$count) #sommo tutta la colonna dei count
-df1$perc_2013<-(df1$count/sum2013)*100 #aggiungo un vettore interno al dataframe con le percentuali del 2013
-rownames(df1)<-c("classe_1","classe_2","classe_3","classe_4") #rinomino le righe
-colnames(df1)<-c("classe","count","perc_2013") #rinomino le colonne
-df1$classe<-c("Classe 1","Classe 2","Classe 3", "Classe 4") #aggiungo un vettore "classe" al dataframe
-p9<-ggplot(df1,aes(x=classe,y=perc_2013, fill=classe))+
-  geom_bar(stat="identity", color="black")+
-  labs(x="Classi",y="Percentuale",title="Percentuale per Classe 2013")+
-  theme(legend.position="bottom")
-#geom_bar mi indica il tipo di grafico, labs sono i labels degli assi e theme mi dà delle opzioni su come posizionare la legenda
-
-
-# unsuperClass dell'immagine 2013
-set.seed(17) #rendo le classi discrete
-mad2013c <- unsuperClass(mad2013, nClasses=4) # applico la funzione unsuperclass con 4 classi
-mad2013c
-## unsuperClass results
-
-##*************** Model ******************
-##$model
-##K-means clustering with 4 clusters of sizes 2506, 3040, 3834, 620
-
-##Cluster centroids:
-##  LC08_L1TP_160074_20130515_20200912_02_T1_B1
-##1                                    9409.491
-##2                                    8775.979
-##3                                    8983.708
-##4                                   10592.624
-##  LC08_L1TP_160074_20130515_20200912_02_T1_B2
-##1                                    8877.249
-##2                                    8021.873
-##3                                    8336.796
-##4                                   10278.739
-##  LC08_L1TP_160074_20130515_20200912_02_T1_B3
-##1                                    8775.857
-##2                                    7492.222
-##3                                    7958.727
-##4                                   10650.861
-##  LC08_L1TP_160074_20130515_20200912_02_T1_B4
-##1                                    9478.174
-##2                                    7049.982
-##3                                    8161.794
-##4                                   11974.574
-##  LC08_L1TP_160074_20130515_20200912_02_T1_B5
-##1                                    13793.69
-##2                                    12509.02
-##3                                    12449.17
-##4                                    16441.05
-##  LC08_L1TP_160074_20130515_20200912_02_T1_B6
-##1                                   15293.137
-##2                                    9861.683
-##3                                   12693.525
-##4                                   18105.334
-##  LC08_L1TP_160074_20130515_20200912_02_T1_B7
-##1                                   11373.508
-##2                                    7330.608
-##3                                    9475.182
-##4                                   14002.126
-##  LC08_L1TP_160074_20130515_20200912_02_T1_B9
-##1                                    5053.075
-##2                                    5033.896
-##3                                    5039.896
-##4                                    5118.569
-
-##Within cluster sum of squares by cluster:
-##[1]  9520701381 23439281432 13082188534 10140087449
-
-##*************** Map ******************
-##$map
-##class      : RasterLayer 
-##dimensions : 7331, 7571, 55503001  (nrow, ncol, ncell)
-##resolution : 30, 30  (x, y)
-##extent     : 419085, 646215, -2347215, -2127285  (xmin, xmax, ymin, ymax)
-##crs        : +proj=utm +zone=38 +datum=WGS84 +units=m +no_defs 
-##source     : r_tmp_2022-09-06_163848_599_47582.grd 
-##names      : class 
-##values     : 1, 4  (min, max)
-
-plot(m2013c$map)
-par(mfrow=c(2,1))
-plot(mad2013c$map)
-plotRGB(mad2013, 4, 3, 2, stretch="hist")
-
-freq(mad2013c$map)
-tot2013 <-
-# calcolo la percentuale di foresta nel 2013
-perc_forest2013 <- (n*100)/tot2013
 
 #unsuperClass dell'immagine 2021
 set.seed(17) #rendo le classi discrete
@@ -292,82 +375,3 @@ plot(mad2021c4$map)
 par(mfrow=c(2,1))
 plot(mad2021c4$map)
 plotRGB(mad2013, 4, 3, 2, stretch="hist")
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-> set.seed(17) #rendo le classi discrete
-> mad2013c2 <- unsuperClass(mad2013, nClasses=2) # applico la funzione unsuperclass con 2 classi
-> mad2013c2
-
-unsuperClass results
-
-*************** Model ******************
-$model
-K-means clustering with 2 clusters of sizes 3881, 6119
-
-Cluster centroids:
-  LC08_L1TP_160074_20130515_20200912_02_T1_B1
-1                                    9525.938
-2                                    8858.672
-  LC08_L1TP_160074_20130515_20200912_02_T1_B2
-1                                    9012.793
-2                                    8151.659
-  LC08_L1TP_160074_20130515_20200912_02_T1_B3
-1                                    8949.758
-2                                    7683.734
-  LC08_L1TP_160074_20130515_20200912_02_T1_B4
-1                                    9689.552
-2                                    7518.782
-  LC08_L1TP_160074_20130515_20200912_02_T1_B5
-1                                    13956.70
-2                                    12485.54
-  LC08_L1TP_160074_20130515_20200912_02_T1_B6
-1                                    15393.68
-2                                    11082.12
-  LC08_L1TP_160074_20130515_20200912_02_T1_B7
-1                                   11550.675
-2                                    8247.919
-  LC08_L1TP_160074_20130515_20200912_02_T1_B9
-1                                    5060.743
-2                                    5036.496
-
-Within cluster sum of squares by cluster:
-[1] 43622210863 50423591043
-
-*************** Map ******************
-$map
-class      : RasterLayer 
-dimensions : 7331, 7571, 55503001  (nrow, ncol, ncell)
-resolution : 30, 30  (x, y)
-extent     : 419085, 646215, -2347215, -2127285  (xmin, xmax, ymin, ymax)
-crs        : +proj=utm +zone=38 +datum=WGS84 +units=m +no_defs 
-source     : r_tmp_2022-09-06_173122_967_09270.grd 
-names      : class 
-values     : 1, 2  (min, max)
-
-
-
-
-
-set.seed(17) #rendo le classi discrete
-mad2021c2 <- unsuperClass(mad2021, nClasses=2) # applico la funzione unsuperclass con 2 classi
-mad2021c2
-plot(mad2021c2$map)
-par(mfrow=c(2,1))
-plot(mad2021c2$map)
-plotRGB(mad2021, 4, 3, 2, stretch="hist")
