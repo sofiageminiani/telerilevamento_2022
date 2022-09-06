@@ -274,13 +274,100 @@ mad2013c
 ##names      : class 
 ##values     : 1, 4  (min, max)
 
-clg <- colorRampPalette(c("yellow", "red", "blue", "black")) (200)
-plot(m2013c$map, col=clg)
+plot(m2013c$map)
 par(mfrow=c(2,1))
-plot(mad2013c$map, col=clg)
+plot(mad2013c$map)
 plotRGB(mad2013, 4, 3, 2, stretch="hist")
 
 freq(mad2013c$map)
 tot2013 <-
 # calcolo la percentuale di foresta nel 2013
 perc_forest2013 <- (n*100)/tot2013
+
+#unsuperClass dell'immagine 2021
+set.seed(17) #rendo le classi discrete
+mad2021c4 <- unsuperClass(mad2021, nClasses=4) # applico la funzione unsuperclass con 4 classi
+mad2021c4
+plot(mad2021c4$map)
+par(mfrow=c(2,1))
+plot(mad2021c4$map)
+plotRGB(mad2013, 4, 3, 2, stretch="hist")
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+> set.seed(17) #rendo le classi discrete
+> mad2013c2 <- unsuperClass(mad2013, nClasses=2) # applico la funzione unsuperclass con 2 classi
+> mad2013c2
+
+unsuperClass results
+
+*************** Model ******************
+$model
+K-means clustering with 2 clusters of sizes 3881, 6119
+
+Cluster centroids:
+  LC08_L1TP_160074_20130515_20200912_02_T1_B1
+1                                    9525.938
+2                                    8858.672
+  LC08_L1TP_160074_20130515_20200912_02_T1_B2
+1                                    9012.793
+2                                    8151.659
+  LC08_L1TP_160074_20130515_20200912_02_T1_B3
+1                                    8949.758
+2                                    7683.734
+  LC08_L1TP_160074_20130515_20200912_02_T1_B4
+1                                    9689.552
+2                                    7518.782
+  LC08_L1TP_160074_20130515_20200912_02_T1_B5
+1                                    13956.70
+2                                    12485.54
+  LC08_L1TP_160074_20130515_20200912_02_T1_B6
+1                                    15393.68
+2                                    11082.12
+  LC08_L1TP_160074_20130515_20200912_02_T1_B7
+1                                   11550.675
+2                                    8247.919
+  LC08_L1TP_160074_20130515_20200912_02_T1_B9
+1                                    5060.743
+2                                    5036.496
+
+Within cluster sum of squares by cluster:
+[1] 43622210863 50423591043
+
+*************** Map ******************
+$map
+class      : RasterLayer 
+dimensions : 7331, 7571, 55503001  (nrow, ncol, ncell)
+resolution : 30, 30  (x, y)
+extent     : 419085, 646215, -2347215, -2127285  (xmin, xmax, ymin, ymax)
+crs        : +proj=utm +zone=38 +datum=WGS84 +units=m +no_defs 
+source     : r_tmp_2022-09-06_173122_967_09270.grd 
+names      : class 
+values     : 1, 2  (min, max)
+
+
+
+
+
+set.seed(17) #rendo le classi discrete
+mad2021c2 <- unsuperClass(mad2021, nClasses=2) # applico la funzione unsuperclass con 2 classi
+mad2021c2
+plot(mad2021c2$map)
+par(mfrow=c(2,1))
+plot(mad2021c2$map)
+plotRGB(mad2021, 4, 3, 2, stretch="hist")
