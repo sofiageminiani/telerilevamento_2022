@@ -127,14 +127,16 @@ plot(gvmi_2013)
 plot(gvmi_2021)
 
 #GEMI 2013
-gemi_2013 = n (1 - 0.25*n) - ((mad2013[[4]] - 0.125)/(1 - mad2013[[4]]))
-n = ( 2 * ( mad2013[[5]] ^2 - mad2013[[4]] ^2) + 1.5 * mad2013[[5]] + 0.5 * mad2013[[4]] ) / ( mad2013[[5]] + mad2013[[4]] + 0.5 )
+n = ( 2 * ( mad2013[[5]]^2 - mad2013[[4]]^2) + 1.5 * mad2013[[5]] + 0.5 * mad2013[[4]] ) / ( mad2013[[5]] + mad2013[[4]] + 0.5 )
+gemi_2013 = n*(1 - 0.25*n) - ((mad2013[[4]] - 0.125)/(1 - mad2013[[4]]))
+
 # NIR = mad2013[[5]]
 # red = mad2013[[4]]
 
 # GEMI 2021
-gemi_2021 = n (1 - 0.25*n) - ((mad2021[[4]] - 0.125)/(1 - mad2021[[4]]))
 n = ( 2 * ( mad2021[[5]] ^2 - mad2021[[4]] ^2) + 1.5 * mad2021[[5]] + 0.5 * mad2021[[4]] ) / ( mad2021[[5]] + mad2021[[4]] + 0.5 )
+gemi_2021 = n*(1 - 0.25*n) - ((mad2021[[4]] - 0.125)/(1 - mad2021[[4]]))
+
 # NIR = mad2021[[5]]
 # red = mad2021[[4]]
 par(mfrow=c(2,1))
@@ -317,61 +319,16 @@ p9<-ggplot(multitemporal,aes(x=class,y=perc_2013, color=class))+
 # Realizzazione di una mappa di Land cover:
 # unsuperClass dell'immagine 2013
 set.seed(17) #rendo le classi discrete
-mad2013c <- unsuperClass(mad2013, nClasses=4) # applico la funzione unsuperclass con 4 classi
-mad2013c
-
-##unsuperClass results
-
-##*************** Model ******************
-##$model
-##K-means clustering with 4 clusters of sizes 1476, 2757, 4160, 1607
-
-##Cluster centroids:
-##  LC08_L1TP_160074_20130515_20200912_02_T1_B1 LC08_L1TP_160074_20130515_20200912_02_T1_B2
-##1                                    8796.923                                    8106.007
-##2                                    8806.082                                    8047.466
-##3                                    9106.699                                    8498.265
-##4                                    9975.039                                    9554.782
-##  LC08_L1TP_160074_20130515_20200912_02_T1_B3 LC08_L1TP_160074_20130515_20200912_02_T1_B4
-##1                                    7587.917                                    7556.715
-##2                                    7551.546                                    7046.279
-##3                                    8209.782                                    8605.622
-##4                                    9694.280                                   10723.641
-##  LC08_L1TP_160074_20130515_20200912_02_T1_B5 LC08_L1TP_160074_20130515_20200912_02_T1_B6
-##1                                    10261.89                                    9919.249
-##2                                    13772.57                                   10558.407
-##3                                    12780.25                                   13646.402
-##4                                    15109.89                                   16823.279
-##  LC08_L1TP_160074_20130515_20200912_02_T1_B7 LC08_L1TP_160074_20130515_20200912_02_T1_B9
-##1                                    7913.077                                    5036.509
-##2                                    7562.347                                    5034.008
-##3                                   10170.874                                    5043.298
-##4                                   12730.095                                    5081.701
-
-##Within cluster sum of squares by cluster:
-##[1] 11166399235  9478462792 15307390878 18875831090
-
-##*************** Map ******************
-##$map
-##class      : RasterLayer 
-##dimensions : 7331, 7571, 55503001  (nrow, ncol, ncell)
-##resolution : 30, 30  (x, y)
-##extent     : 419085, 646215, -2347215, -2127285  (xmin, xmax, ymin, ymax)
-##crs        : +proj=utm +zone=38 +datum=WGS84 +units=m +no_defs 
-##source     : r_tmp_2022-09-06_222038_1289_23236.grd 
-##names      : class 
-##values     : 1, 4  (min, max)
-
-clg <- colorRampPalette(c("yellow", "red", "blue", "black")) (200)
-par(mfrow=c(2,1))
+mad2013c3 <- unsuperClass(mad2013, nClasses=3) # applico la funzione unsuperclass con 4 classi
+mad2013c3
 plot(mad2013c$map, col=clg)
-plotRGB(mad2013, 4, 3, 2, stretch="hist")
+
 
 #unsuperClass dell'immagine 2021
 set.seed(17) #rendo le classi discrete
-mad2021c4 <- unsuperClass(mad2021, nClasses=4) # applico la funzione unsuperclass con 4 classi
-mad2021c4
-plot(mad2021c4$map)
-par(mfrow=c(2,1))
-plot(mad2021c4$map)
-plotRGB(mad2013, 4, 3, 2, stretch="hist")
+mad2021c3 <- unsuperClass(mad2021, nClasses=3) # applico la funzione unsuperclass con 4 classi
+mad2021c3
+plot(mad2021c3$map)
+
+
+
