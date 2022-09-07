@@ -122,13 +122,13 @@ plot(ndvi_diff, col=cl, main="NDVI difference between 2013 and 2021")
 # calcolo indice spettrale GEMI
 # GEMI 2013
 n = (2 * ( mad2013[[5]] ^2 - mad2013[[4]] ^2) + 1.5 * mad2013[[5]] + 0.5 * mad2013[[4]] ) / ( mad2013[[5]] + mad2013[[4]] + 0.5 )
-gemi_2013c = (n*(1-0.25*n)-((mad2013[[4]]-0.125)/(1-mad2013[[4]])))
+gemi_2013 = (n*(1-0.25*n)-((mad2013[[4]]-0.125)/(1-mad2013[[4]])))
 # NIR = mad2013[[5]]
 # red = mad2013[[4]]
 
 # GEMI 2021
-n = ( 2 * ( mad2021[[5]] ^2 - mad2021[[4]] ^2) + 1.5 * mad2021[[5]] + 0.5 * mad2021[[4]] ) / ( mad2021[[5]] + mad2021[[4]] + 0.5 ))
-gemi_2021 = n*(1 - 0.25*n) - ((mad2021[[4]] - 0.125)/(1 - mad2021[[4]]))
+n = (2 * ( mad2021[[5]] ^2 - mad2021[[4]] ^2) + 1.5 * mad2021[[5]] + 0.5 * mad2021[[4]] ) / ( mad2021[[5]] + mad2021[[4]] + 0.5 )
+gemi_2021 = (n*(1-0.25*n)-((mad2021[[4]]-0.125)/(1-mad2021[[4]])))
 # NIR = mad2021[[5]]
 # red = mad2021[[4]]
 # GEMI difference between 2013 and 2021
@@ -155,45 +155,50 @@ plot(gvmi_diff, col=cl, main="GVMI difference between 2013 and 2021")
 
 
 # Realizzazione di una mappa di Land cover:
-# unsuperClass dell'immagine 2013
-set.seed(17) #rendo le classi discrete
-mad2013c2 <- unsuperClass(mad2013, nClasses=2) # applico la funzione unsuperclass con 2 classi
-mad2013c2
 
+# A causa di una problematica legata alla classificazione dei pixel tra le immagini satellitari del 2013 e 2021
+# ho creato una seconda working directory(LAND_COVER) con dentro le bande del BLU(B2) e del NIR(B5) per ciascuno dei due anni indagati
+# La decisione delle bande è stata fatta per tentativi
+
+# settaggio di una seconda working directory
+setwd("/Users/sofiageminiani/desktop/lab/Esame_telerilevamento/LAND_COVER") 
+
+# unsuperClass dell'immagine 2013
+# 2013
+rlist<-list.files(pattern="LC08_L1TP_160074_20130515_20200912_02_T1_B") #creo una lista cercando elementi comuni
+import<-lapply(rlist,raster) #con lapply applico la funzione citata a tutta la lista
+mad2013lc<-stack(import) #unisce in un singolo file quelli che erano in lista
+mad2013lc # cliccando invio ottengo le seguenti informazioni
+##class      : RasterStack 
+##dimensions : 7331, 7571, 55503001, 2  (nrow, ncol, ncell, nlayers)
+##resolution : 30, 30  (x, y)
+##extent     : 419085, 646215, -2347215, -2127285  (xmin, xmax, ymin, ymax)
+##crs        : +proj=utm +zone=38 +datum=WGS84 +units=m +no_defs 
+##names      : LC08_L1TP_160074_20130515_20200912_02_T1_B2, LC08_L1TP_160074_20130515_20200912_02_T1_B5 
+##min values :                                           0,                                           0 
+##max values :                                       65535,                                       65535 
+
+set.seed(17) #rendo le classi discrete
+mad2013c <- unsuperClass(mad2013lc, nClasses=3) # applico la funzione unsuperclass con 3 classi
+mad2013c # premendo invio ottengo le seguenti informazioni
 ##unsuperClass results
 
 ##*************** Model ******************
 ##$model
-##K-means clustering with 2 clusters of sizes 3881, 6119
+##K-means clustering with 3 clusters of sizes 2131, 5692, 2177
 
 ##Cluster centroids:
-##  LC08_L1TP_160074_20130515_20200912_02_T1_B1
-##1                                    9525.938
-##2                                    8858.672
 ##  LC08_L1TP_160074_20130515_20200912_02_T1_B2
-##1                                    9012.793
-##2                                    8151.659
-##  LC08_L1TP_160074_20130515_20200912_02_T1_B3
-##1                                    8949.758
-##2                                    7683.734
-##  LC08_L1TP_160074_20130515_20200912_02_T1_B4
-##1                                    9689.552
-##2                                    7518.782
+##1                                    8197.514
+##2                                    8355.064
+##3                                    9110.116
 ##  LC08_L1TP_160074_20130515_20200912_02_T1_B5
-##1                                    13956.70
-##2                                    12485.54
-##  LC08_L1TP_160074_20130515_20200912_02_T1_B6
-##1                                    15393.68
-##2                                    11082.12
-##  LC08_L1TP_160074_20130515_20200912_02_T1_B7
-##1                                   11550.675
-##2                                    8247.919
-##  LC08_L1TP_160074_20130515_20200912_02_T1_B9
-##1                                    5060.743
-##2                                    5036.496
+##1                                    10525.80
+##2                                    13078.83
+##3                                    15475.32
 
 ##Within cluster sum of squares by cluster:
-##[1] 43622210863 50423591043
+##[1] 3960132478 3637265000 5570786720
 
 ##*************** Map ******************
 ##$map
@@ -202,17 +207,21 @@ mad2013c2
 ##resolution : 30, 30  (x, y)
 ##extent     : 419085, 646215, -2347215, -2127285  (xmin, xmax, ymin, ymax)
 ##crs        : +proj=utm +zone=38 +datum=WGS84 +units=m +no_defs 
-##source     : r_tmp_2022-09-06_173122_967_09270.grd 
+##source     : r_tmp_2022-09-08_003442_2506_43357.grd 
 ##names      : class 
-##values     : 1, 2  (min, max)
+##values     : 1, 3  (min, max)
 
-# plotto la mappa classificata e l'immagine satellitare con i colori reali
-par(mfrow=c(2,1))
-plot(mad2013c2$map)
-plotRGB(mad2013, 4, 3, 2, stretch="hist")
+# plotto la mappa classificata 
+plot(mad2013c$map)
+
 
 # realizzazione della mappa di land cover
-freq(mad2013c2$map)
+freq(mad2013c$map)
+     value    count
+[1,]     1  8456870
+[2,]     2 21912311
+[3,]     3  8408679
+[4,]    NA 16725141
 # la classe 1 ha 15130125 pixel di 55503001 (fiumi+suolo+nuvole)
 # la classe 2 ha 23646341 pixel di 55503001 (foresta)
 # tolgo la classe NA=16726535 dal calcolo, quindi:
@@ -224,33 +233,42 @@ perc_other2013 <- 100-60.98117
 # 39.01883 % di suolo+fiumi+laghi+nuvole
 
 
-# unsuperClass dell'immagine satellitare del 2021
-set.seed(17) #rendo le classi discrete
-mad2021c2 <- unsuperClass(mad2021, nClasses=2) # applico la funzione unsuperclass con 2 classi
-mad2021c2 # premendo invio si ottengo le seguenti informazioni
+#unsuperClass dell'immagine 2021
+# 2021
+rlist<-list.files(pattern="LC08_L1TP_160074_20210521_20210529_02_T1_B") #creo una lista cercando elementi comuni
+import<-lapply(rlist,raster) #con lapply applico la funzione citata a tutta la lista
+mad2021lc<-stack(import) #unisce in un solo file le bande presenti nella lista
+mad2021lc # cliccando invio ottengo le seguenti informazioni
+##class      : RasterStack 
+##dimensions : 7771, 7661, 59533631, 2  (nrow, ncol, ncell, nlayers)
+##resolution : 30, 30  (x, y)
+##extent     : 416985, 646815, -2353815, -2120685  (xmin, xmax, ymin, ymax)
+##crs        : +proj=utm +zone=38 +datum=WGS84 +units=m +no_defs 
+##names      : LC08_L1TP_160074_20210521_20210529_02_T1_B2, LC08_L1TP_160074_20210521_20210529_02_T1_B5 
+##min values :                                           0,                                           0 
+##max values :                                       65535,                                       65535 
 
+set.seed(17) #rendo le classi discrete
+mad2021c <- unsuperClass(mad2021lc, nClasses=3) # applico la funzione unsuperclass con 3 classi
+mad2021c# cliccando invio ottengo le seguenti informazioni
 ##unsuperClass results
 
 ##*************** Model ******************
 ##$model
-##K-means clustering with 2 clusters of sizes 3820, 6180
+##K-means clustering with 3 clusters of sizes 2809, 5792, 1399
 
 ##Cluster centroids:
-##  LC08_L1TP_160074_20210521_20210529_02_T1_B1 LC08_L1TP_160074_20210521_20210529_02_T1_B2
-##1                                    9375.834                                    8875.024
-##2                                    8886.261                                    8206.064
-##  LC08_L1TP_160074_20210521_20210529_02_T1_B3 LC08_L1TP_160074_20210521_20210529_02_T1_B4
-##1                                    8873.014                                    9657.645
-##2                                    7779.310                                    7696.796
-##  LC08_L1TP_160074_20210521_20210529_02_T1_B5 LC08_L1TP_160074_20210521_20210529_02_T1_B6
-##1                                    14061.53                                    15318.01
-##2                                    12574.96                                    11322.29
-##  LC08_L1TP_160074_20210521_20210529_02_T1_B7 LC08_L1TP_160074_20210521_20210529_02_T1_B9
-##1                                   11791.834                                    5045.072
-##2                                    8605.246                                    5042.991
+##  LC08_L1TP_160074_20210521_20210529_02_T1_B2
+##1                                    8815.032
+##2                                    8353.814
+##3                                    8198.325
+##  LC08_L1TP_160074_20210521_20210529_02_T1_B5
+##1                                    15047.68
+##2                                    12904.35
+##3                                    10305.93
 
 ##Within cluster sum of squares by cluster:
-##[1] 35105803990 45737465738
+##[1] 4453885777 3059523949 2901942398
 
 ##*************** Map ******************
 ##$map
@@ -259,17 +277,18 @@ mad2021c2 # premendo invio si ottengo le seguenti informazioni
 ##resolution : 30, 30  (x, y)
 ##extent     : 416985, 646815, -2353815, -2120685  (xmin, xmax, ymin, ymax)
 ##crs        : +proj=utm +zone=38 +datum=WGS84 +units=m +no_defs 
-##source     : r_tmp_2022-09-06_223356_1289_09270.grd 
+##source     : r_tmp_2022-09-08_003850_2506_43357.grd 
 ##names      : class 
-##values     : 1, 2  (min, max)
-
-# plotto la mappa classificata e l'immagine satellitare con i colori reali
-par(mfrow=c(2,1))
-plot(mad2021c2$map)
-plotRGB(mad2021, 4, 3, 2, stretch="hist")
+##values     : 1, 3  (min, max)
+plot(mad2021c$map)
 
 # realizzazione della mappa di land cover
-freq(mad2021c2$map)
+freq(mad2021c$map)
+     value    count
+[1,]     1 11716094
+[2,]     2 23950305
+[3,]     3  5963854
+[4,]    NA 17903378
 # la classe 1 ha 16104421 pixel di 59533631 (fiumi+suolo+nuvole)
 # la classe 2 ha 25524386 pixel di 59533631 (foresta)
 # tolgo la classe NA=17904824 dal calcolo quindi:
@@ -301,43 +320,4 @@ p9<-ggplot(multitemporal,aes(x=class,y=perc_2013, color=class))+
   geom_bar(stat="identity", color="black")+
   labs(x="Class",y="Percentage",title="Percentages for classification map of 2013")+
   theme(legend.position="bottom")
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-# Realizzazione di una mappa di Land cover:
-# unsuperClass dell'immagine 2013
-set.seed(17) #rendo le classi discrete
-mad2013c3 <- unsuperClass(mad2013, nClasses=3) # applico la funzione unsuperclass con 4 classi
-mad2013c3
-plot(mad2013c$map, col=clg)
-
-
-#unsuperClass dell'immagine 2021
-set.seed(17) #rendo le classi discrete
-mad2021c3 <- unsuperClass(mad2021, nClasses=3) # applico la funzione unsuperclass con 4 classi
-mad2021c3
-plot(mad2021c3$map)
-
-
 
