@@ -147,15 +147,49 @@ plot(gvmi_2013)
 plot(gvmi_2021)
 # GVMI difference between 2013 and 2021
 gvmi2013res<-resample(gvmi_2013,gvmi_2021,method="bilinear") # ricampionare per differente estensione dei due raster
-gvmi_diff <- gvmi2013res-ndvi2021
+gvmi_diff <- gvmi2013res-gvmi_2021
 par(mfrow=c(3,1)) # realizzo un multiframe
 plot(gvmi_2013, col=cl, main="GVMI 2013")
 plot(gvmi_2021, col=cl, main="GVMI 2021")
 plot(gvmi_diff, col=cl, main="GVMI difference between 2013 and 2021")
 
+# NDMI 2013 and 2021
+ndmi_2013 <- (mad2013[[5]]- mad2013[[6]])/(mad2013[[5]]+mad2013[[6]])
+ndmi_2021 <- (mad2021[[5]]- mad2021[[6]])/(mad2021[[5]]+mad2021[[6]])
+par(mfrow=c(2,1))
+plot(ndmi_2013)
+plot(ndmi_2021)
+# NDMI difference between 2013 and 2021
+ndmi2013res<-resample(ndmi_2013,ndmi_2021,method="bilinear") # ricampionare per differente estensione dei due raster
+ndmi_diff <- ndmi2013res-ndmi_2021
+par(mfrow=c(3,1)) # realizzo un multiframe
+plot(ndmi_2013, col=cl, main="NDMI 2013")
+plot(ndmi_2021, col=cl, main="NDMI 2021")
+plot(ndmi_diff, col=cl, main="NDMI difference between 2013 and 2021")
 
+# correlo gli indici analizzati usando la tecnica della pca
+box<-stack(ndvi_diff, gemi_diff, gvmi_diff, ndmi_diff) # associo ad un oggetto lo stack degli indici
+plot(box, col=cl)
+pairs(box) # da mettere alla fine con tutti gli indici
+varpca<-rasterPCA(box) # faccio la pca
+summary(varpca$model)
+##Importance of components:
+##                         Comp.1       Comp.2       Comp.3
+##Standard deviation     13889064 5.353152e-02 2.405277e-02
+##Proportion of Variance        1 1.485502e-17 2.999054e-18
+##Cumulative Proportion         1 1.000000e+00 1.000000e+00
+##                             Comp.4
+##Standard deviation     2.398946e-02
+##Proportion of Variance 2.983287e-18
+##Cumulative Proportion  1.000000e+00
+# La prima banda spiega il 100%
+# associo ad una variabile la mappa normalizzata al suo max valore
+varpcaN<-varpca$map$PC1/maxValue(varpca$map$PC1)
+plot(varpcaN,col=cl)
+
+
+### MAPPA DI LAND COVER ###
 # Realizzazione di una mappa di Land cover:
-
 # A causa di una problematica legata alla classificazione dei pixel tra le immagini satellitari del 2013 e 2021
 # ho creato una seconda working directory(LAND_COVER) con dentro le bande del BLU(B2) e del NIR(B5) per ciascuno dei due anni indagati
 # La decisione delle bande è stata fatta per tentativi
@@ -214,23 +248,25 @@ mad2013c # premendo invio ottengo le seguenti informazioni
 # plotto la mappa classificata 
 plot(mad2013c$map)
 
-
 # realizzazione della mappa di land cover
-freq(mad2013c$map)
-     value    count
-[1,]     1  8456870
-[2,]     2 21912311
-[3,]     3  8408679
-[4,]    NA 16725141
-# la classe 1 ha 15130125 pixel di 55503001 (fiumi+suolo+nuvole)
-# la classe 2 ha 23646341 pixel di 55503001 (foresta)
-# tolgo la classe NA=16726535 dal calcolo, quindi:
-tot2013 <- 38776466 # numero di pixel totali dell'immagine satellitare, tolti i pixel di NA
+freq(mad2013c$map)# ottengo le seguenti informazioni
+##     value    count
+##[1,]     1  8456870
+##[2,]     2 21912311
+##[3,]     3  8408679
+##[4,]    NA 16725141
+# la classe 1 ha 8456870 pixel di 55503001 (fiumi+suolo)
+# la classe 2 ha 21912311 pixel di 55503001 (foresta)
+# la classe 3 ha 8408679 pixel di 55503001 (nuvole)
+# tolgo la classe NA=16725141 dal calcolo, quindi:
+tot2013 <- 38777860 # numero di pixel totali dell'immagine satellitare, tolti i pixel di NA
 # calcolo la percentuale di foresta nel 2013
-perc_forest2013 <- (23646341*100)/tot2013
-# 60.98117 % di foresta
-perc_other2013 <- 100-60.98117
-# 39.01883 % di suolo+fiumi+laghi+nuvole
+perc_forest2013 <- (21912311*100)/tot2013
+# 56.50727% di foresta
+perc_water2013 <- (8456870*100)/tot2013
+# 21.8085% di acqua(laghi, fiumi privi di elevata sedimentazione, mare)
+perc_soil2013 <- (8408679*100)/tot2013
+# 21.68423% di suolo+nuvole
 
 
 #unsuperClass dell'immagine 2021
@@ -283,41 +319,52 @@ mad2021c# cliccando invio ottengo le seguenti informazioni
 plot(mad2021c$map)
 
 # realizzazione della mappa di land cover
-freq(mad2021c$map)
-     value    count
-[1,]     1 11716094
-[2,]     2 23950305
-[3,]     3  5963854
-[4,]    NA 17903378
-# la classe 1 ha 16104421 pixel di 59533631 (fiumi+suolo+nuvole)
-# la classe 2 ha 25524386 pixel di 59533631 (foresta)
-# tolgo la classe NA=17904824 dal calcolo quindi:
-tot2021 <-(16104421+25524386)
+freq(mad2021c$map) # ottengo le seguenti informazioni
+##     value    count
+##[1,]     1 11716094
+##[2,]     2 23950305
+##[3,]     3  5963854
+##[4,]    NA 17903378
+# la classe 1 ha 5963854 pixel di 59533631 (acqua)
+# la classe 2 ha 23950305 pixel di 59533631 (foresta)
+# tolgo la classe NA=17903378 dal calcolo quindi:
+tot2021 <-(11716094+23950305+5963854)
 # calcolo la percentuale di foresta nel 2021
-perc_forest2021 <- (25524386*100)/tot2021
-#61.31424% di foresta
-perc_other2021 <- 100-61.31424
-# 38.68576% di suolo+fiumi+nuvole
+# calcolo la percentuale di foresta nel 2013
+perc_forest2021 <- (23950305*100)/tot2021
+# 57.53101% di foresta
+perc_water2021 <- (5963854*100)/tot2021
+# 14.32577% di acqua(laghi, fiumi privi di elevata sedimentazione, mare)
+perc_soil2021 <- (11716094*100)/tot2021
+# 28.14322% di suolo+nuvole
 
 ### DATI FINALI ###
-# perc_forest2013: 61.31424% 
-# perc_forest2021: 42.87389%
-#
-# perc_other2021: 38.68576% 
+# perc_forest2013 <- 56.50727%
+# perc_water2013 <- 21.8085%
+# perc_soil2013 <- 21.68423% 
+# perc_forest2021 <- 57.53101% 
+# perc_water2021 <- 14.32577% 
+# perc_soil2021 <- 28.14322%  
 ### ###
 
 # costruisco un dataframe
-class <- c("Forest", "Other")
-perc_2013 <- c(60.98117, 39.01883)
-perc_2021 <- c(61.31424, 38.68576)
-multitemporal <- data.frame(class, perc_forest2013, perc_forest2021)
+class <- c("Forest", "Water", "Soil")
+perc_2013 <- c(56.50727, 21.8085, 21.68423)
+perc_2021 <- c(57.53101, 14.32577, 28.14322)
+multitemporal <- data.frame(class, perc_2013, perc_2021)
 multitemporal # cliccando invio ottengo la seguente tabella
-##   class perc_forest2013 perc_forest2021
-##1 Forest        60.98117        61.31424
-##2  Other        39.01883        38.68576
-
+##   class perc_2013 perc_2021
+##1 Forest  56.50727  57.53101
+##2  Water  21.80850  14.32577
+##3   Soil  21.68423  28.14322
 p9<-ggplot(multitemporal,aes(x=class,y=perc_2013, color=class))+
   geom_bar(stat="identity", color="black")+
   labs(x="Class",y="Percentage",title="Percentages for classification map of 2013")+
   theme(legend.position="bottom")
 
+p10<-ggplot(multitemporal,aes(x=class,y=perc_2021, color=class))+
+   geom_bar(stat="identity", color="black")+
+   labs(x="Class",y="Percentage",title="Percentages for classification map of 2021")+
+   theme(legend.position="bottom")
+# plotto insieme i due istogrammi
+p9+p10
