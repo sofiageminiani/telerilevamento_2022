@@ -260,7 +260,7 @@ freq(mad2013c$map)# ottengo le seguenti informazioni
 # la classe 3 ha 8408679 pixel di 55503001 (nuvole)
 # tolgo la classe NA=16725141 dal calcolo, quindi:
 tot2013 <- 38777860 # numero di pixel totali dell'immagine satellitare, tolti i pixel di NA
-# calcolo la percentuale di foresta nel 2013
+# calcolo la percentuale di foresta nel 2013:
 perc_forest2013 <- (21912311*100)/tot2013
 # 56.50727% di foresta
 perc_water2013 <- (8456870*100)/tot2013
@@ -329,8 +329,7 @@ freq(mad2021c$map) # ottengo le seguenti informazioni
 # la classe 2 ha 23950305 pixel di 59533631 (foresta)
 # tolgo la classe NA=17903378 dal calcolo quindi:
 tot2021 <-(11716094+23950305+5963854)
-# calcolo la percentuale di foresta nel 2021
-# calcolo la percentuale di foresta nel 2013
+# calcolo la percentuale di foresta nel 2021:
 perc_forest2021 <- (23950305*100)/tot2021
 # 57.53101% di foresta
 perc_water2021 <- (5963854*100)/tot2021
